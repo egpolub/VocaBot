@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+   <div id="logo">VOCA™</div>
+      <router-link to="/">
+      </router-link>
+
+    <router-view/>
   </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
-
 <style>
+ * {
+       margin: 0;
+   }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height: 100vh;
+}
+@font-face {
+  font-family: "Compose";
+  src: local("Compose"),
+   url(./assets/Compose/Compose-Bold.ttf) format("truetype");
+}
+#logo{
+  position:fixed;
+  font-size:50px;
+  z-index:999;
+  margin-left:27px;
+   margin-top:15px;
+   color: #ecadd2;
 }
 </style>
