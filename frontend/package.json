@@ -14,10 +14,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "core-js": "^3.6.5",
-    "ethereumjs-tx": "^2.1.2",
-    "feather-icons": "^4.28.0",
     "vue": "^2.6.11",
     "vue-fontawesome": "0.0.2",
+    "vue-kinesis": "^1.2.3",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
   },
