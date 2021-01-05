@@ -2,18 +2,18 @@
  <draggable
         v-model="list"
         @start="drag = true"
-        @end="drag = false"
+        @end="saveLayout"
         v-bind="dragOptions"
         id="drag"
       >
        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
-       <div v-for="element in list"
-          :key="element.order">
-          <HelloUser v-bind:username="username" v-bind:photo_url="photo_url" v-if="element.name=='HelloUser'" @click="element.fixed = !element.fixed"/>
-          <AddWords v-else-if="element.name=='AddWords'" @click="element.fixed = !element.fixed"/>
-          <Block v-else-if="element.name=='Block'" @click="element.fixed = !element.fixed"/>
-        </div>
-        </transition-group>
+          <div v-for="element in list"
+              :key="element">
+              <HelloUser v-bind:username="username" v-bind:photo_url="photo_url" v-if="element=='HelloUser'" @click="element.fixed = !element.fixed"/>
+              <AddWords v-else-if="element=='AddWords'" @click="element.fixed = !element.fixed"/>
+              <Block v-else-if="element=='Block'" @click="element.fixed = !element.fixed"/>
+          </div>
+       </transition-group>
     </draggable>
 </template>
 
@@ -22,7 +22,6 @@ import draggable from 'vuedraggable'
 import HelloUser from '@/components/User.vue'
 import AddWords from '@/components/AddWords.vue'
 import Block from '@/components/Block.vue'
-const message = ['HelloUser', 'AddWords', 'Block']
 export default {
   props: ['username', 'photo_url'],
   components: {
@@ -33,9 +32,7 @@ export default {
   },
   data () {
     return {
-      list: message.map((name, index) => {
-        return { name, order: index + 1 }
-      }),
+      list: ['HelloUser', 'AddWords', 'Block'],
       drag: false
     }
   },
@@ -46,6 +43,17 @@ export default {
         group: 'blocks',
         disabled: false
       }
+    }
+  },
+  created () {
+    if (localStorage.getItem('verList')) {
+      this.list = JSON.parse(localStorage.getItem('verList'))
+    }
+  },
+  methods: {
+    saveLayout () {
+      this.drag = false
+      localStorage.setItem('verList', JSON.stringify(this.list))
     }
   }
 

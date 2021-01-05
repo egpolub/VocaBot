@@ -6,14 +6,14 @@
   <draggable
         v-model="list"
         @start="drag = true"
-        @end="drag = false"
+        @end="saveLayout"
         v-bind="dragOptions"
       >
        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
        <div v-for="element in list"
-          :key="element.order" class="flex">
-          <Draggables v-bind:username="user.username" v-bind:photo_url="user.photo_url" v-if="element.name=='Draggables'" @click="element.fixed = !element.fixed"/>
-          <Stats v-else-if="element.name=='Stats'" @click="element.fixed = !element.fixed"/>
+          :key="element" class="flex">
+          <Draggables v-bind:username="user.username" v-bind:photo_url="user.photo_url" v-if="element=='Draggables'" @click="element.fixed = !element.fixed"/>
+          <Stats v-else-if="element=='Stats'" @click="element.fixed = !element.fixed"/>
         </div>
         </transition-group>
     </draggable>
@@ -24,7 +24,6 @@
 import draggable from 'vuedraggable'
 import Draggables from '@/components/Draggables.vue'
 import Stats from '@/components/Stats.vue'
-const message = ['Draggables', 'Stats']
 export default {
   components: {
     Stats,
@@ -33,9 +32,7 @@ export default {
   },
   data () {
     return {
-      list: message.map((name, index) => {
-        return { name, order: index + 5 }
-      }),
+      list: ['Draggables', 'Stats'],
       drag: false,
       user: {
         username: 'User',
@@ -48,6 +45,9 @@ export default {
     if (user) {
       this.user = this.$store.state.user
     }
+    if (localStorage.getItem('horList')) {
+      this.list = JSON.parse(localStorage.getItem('horList'))
+    }
   },
 
   computed: {
@@ -57,6 +57,12 @@ export default {
         group: 'blocks2',
         disabled: false
       }
+    }
+  },
+  methods: {
+    saveLayout () {
+      this.drag = false
+      localStorage.setItem('horList', JSON.stringify(this.list))
     }
   }
 }
