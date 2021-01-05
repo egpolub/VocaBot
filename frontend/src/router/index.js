@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Voca from '../views/Voca.vue'
+import Sidebar from '../components/Sidebar.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Error from '../views/Error.vue'
 import Game from '../views/Game.vue'
@@ -19,20 +19,24 @@ const router = new VueRouter({
     },
     {
       path: '/voca',
-      name: 'Voca',
-      component: Voca,
+      name: 'Sidebar',
+      component: Sidebar,
+      redirect: { name: 'Dashboard' },
       children: [{
         name: 'Dashboard',
         path: '/dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: { requiresAuth: true }
       }, {
         name: 'Game',
         path: '/game',
-        component: Game
+        component: Game,
+        meta: { requiresAuth: true }
       }, {
         name: 'Settings',
         path: '/settings',
-        component: Settings
+        component: Settings,
+        meta: { requiresAuth: true }
       }],
       meta: { requiresAuth: true }
     },

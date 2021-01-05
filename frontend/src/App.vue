@@ -8,6 +8,15 @@
 </template>
 
 <style>
+.panel{
+    cursor: move;
+    z-index: 2;
+  width:100%;
+  backdrop-filter: blur( 15px );
+  -webkit-backdrop-filter: blur( 15px );
+  border-radius: 30px ;
+  position: relative;
+ }
 *{
    margin: 0;
 }
