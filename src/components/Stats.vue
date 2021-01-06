@@ -69,6 +69,5 @@ font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
   margin-left:60px;
   min-height:680px;
   min-width: 340px;
- /*border: 1px solid rgba( 255, 255, 255, 0.18 );*/
  }
 </style>

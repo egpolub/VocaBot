@@ -1,10 +1,6 @@
 <template>
  <div id="screen">
   <div class="dashboard">
-  <!--  <div v-if="user!=null" id="user">
-       <img id="pfp" :src="user.photo_url" alt="">
-       <span> {{user.username}}</span>
-    </div>-->
   <div id="tabs">
     <button v-bind:class="{activeButton:blue}" class="tab" id="tab1" v-on:click="dashboard">
        <font-awesome-icon class="icon" id="menu" :icon="['fas', 'bars']"/>
@@ -23,7 +19,6 @@
   </router-view>
 
  </div>
-   <!-- <img id="candy-1" :src="candy1" alt=""> -->
 
 </template>
 
@@ -170,7 +165,6 @@ export default {
    height:100%;
    width:100%;
    position: fixed;
-
  }
 
 </style>

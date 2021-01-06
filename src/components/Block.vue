@@ -38,13 +38,13 @@ export default {
 #box{
   margin-top:16px;
   height:35px;
-width:35px;
-background-color:#ffffff00;
-float:right;
-margin-right:16px;
-border-radius:12px;
-outline:0;
-border:0px;
+  width:35px;
+  background-color:#ffffff00;
+  float:right;
+  margin-right:16px;
+  border-radius:12px;
+  outline:0;
+  border:0px;
 }
 
 .panel{
@@ -60,8 +60,8 @@ button{
   font-size: 23px;
   color:#393c65;
   font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
-margin-top:25px;
- outline:none;
+  margin-top:25px;
+  outline:none;
    transition: 0.2s;
 }
 button:hover{

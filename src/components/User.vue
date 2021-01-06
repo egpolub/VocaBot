@@ -81,7 +81,6 @@ border:0;
   backdrop-filter: blur( 15px );
   -webkit-backdrop-filter: blur( 15px );
   border-radius: 30px;
- /*border: 1px solid rgba( 255, 255, 255, 0.18 );*/
   float: right;
   right:100px;
  }

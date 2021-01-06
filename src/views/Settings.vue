@@ -100,7 +100,6 @@ export default {
   backdrop-filter: blur( 15px );
   -webkit-backdrop-filter: blur( 15px );
   border-radius: 30px;
- /*border: 1px solid rgba( 255, 255, 255, 0.18 );*/
   margin:60px calc(50% - 225px);
   margin-bottom:0;
   position:absolute;

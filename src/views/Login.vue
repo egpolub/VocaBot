@@ -85,7 +85,6 @@ import candy1 from '@/assets/candy2.png'
 import candy2 from '@/assets/candy3.png'
 import candy3 from '@/assets/candy4.png'
 
-// @ is an alias to /src
 export default {
   name: 'Home',
   data () {
@@ -99,7 +98,6 @@ export default {
   methods: {
     login () {
       this.$store.dispatch('login').then(() => {
-      //  this.$router.push({ name: 'Dashboard' })
       }).catch(err => {
         console.log(err.response.data.error)
       })
@@ -375,7 +373,6 @@ width:250px;
   backdrop-filter: blur( 15px );
   -webkit-backdrop-filter: blur( 15px );
   border-radius: 30px;
- /*border: 1px solid rgba( 255, 255, 255, 0.18 );*/
   top:50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
@@ -396,9 +393,9 @@ button{
   font-size: 23px;
   color:#393c65;
   font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
-margin-top:25px;
- outline:none;
-   transition: 0.2s;
+  margin-top:25px;
+  outline:none;
+  transition: 0.2s;
 }
 button:hover{
   background-color:#f6f6f6;
