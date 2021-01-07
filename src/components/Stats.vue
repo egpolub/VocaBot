@@ -3,7 +3,7 @@
    <div class="user panel"><span id="dash">Dashboard <br>
     <span id="description">View your statistics.</span>
     </span>
-    <button id="box" v-on:click="pin"><font-awesome-icon class="icon" :class={pinned:pinned_class} id="tack" :icon="['fas', 'thumbtack']"/>
+    <button v-if="!$isMobile()" id="box" v-on:click="pin"><font-awesome-icon class="icon" :class={pinned:pinned_class} id="tack" :icon="['fas', 'thumbtack']"/>
     </button>
    </div>
  </div>
@@ -58,16 +58,48 @@ font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
   z-index: 2;
   width:calc(100vw - 730px);
   height: calc(100vh - 120px);
-  top:0px;
   background: rgba( 255, 255, 255, 0.4 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.05 );
   backdrop-filter: blur( 15px );
   -webkit-backdrop-filter: blur( 15px );
   border-radius: 30px;
   position: relative;
-  top:60px;
   margin-left:60px;
   min-height:680px;
-  min-width: 340px;
+  min-width: 390px;
+  margin-bottom: 60px;
+  margin-right:0px;
  }
+ @media only screen and (max-width:1120px){
+  #user3{
+   min-width: 0px;
+   width: calc(100vw - 280px);
+ }
+}
+ @media only screen and (max-width:638px), (max-height:700px){
+  #user3{
+   width: calc(100vw - 120px);
+ }
+}
+@media only screen and (max-width:437px), (max-height:700px) and (max-width:437px){
+  #user3{
+   width: calc(100vw - 60px);
+ }
+}
+@media only screen and (max-width:394px){
+#box{
+  display: none;
+}
+}
+@media only screen and (max-width:359px), (max-height:700px) and (max-width:359px){
+ #user3{
+   width: calc(100vw - 30px);
+ }
+}
+@media only screen and (max-width:310px), (max-height:700px) and (max-width:310px){
+#description{
+font-size:21px;
+}
+
+}
 </style>

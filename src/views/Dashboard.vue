@@ -1,14 +1,14 @@
 <template>
   <div id="blocks">
-    <div id="menu" class="flex"></div>
     <draggable
       v-model="list"
       @start="drag = true"
       @end="saveLayout"
       v-bind="dragOptions"
       :move="checkMove"
+      :disabled="$isMobile()"
     >
-      <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+      <transition-group tag ="div" type="transition" :name="!drag ? 'flip-list' : null">
         <div v-for="element in list" :key="element.item" class="flex">
           <Draggables
             @pinned="pinItem(element.item, $event)"
@@ -58,11 +58,11 @@ export default {
   },
   created () {
     var user = this.$store.state.user
-    console.log(JSON.stringify(user))
     if (user) {
       this.user = user
     }
-    if (localStorage.getItem('horList')) {
+
+    if (localStorage.getItem('horList') && !this.$isMobile()) {
       this.list = JSON.parse(localStorage.getItem('horList'))
     }
   },
@@ -114,22 +114,44 @@ export default {
 </script>
 
 <style scoped>
-#menu {
-  width: 160px;
-  height: 100%;
-  position: relative;
-  z-index: -30;
-}
+
 .flip-list-move {
   transition: transform 0.3s;
 }
 #blocks {
-  width: 100%;
+  width: calc(100% - 160px);
+  margin-left:160px;
+  padding-top:60px;
   height: calc(100% - 120px);
+  z-index:1;
+  transition:0.2s
 }
 
 .flex {
   white-space: nowrap;
   float: left;
+
+}
+
+@media only screen and (max-width:638px), (max-height:700px) {
+  #blocks{
+    padding-top:200px;
+    margin-left:0px;
+ }
+}
+@media only screen and (max-width:450px), (max-height:700px) {
+  #blocks{
+    padding-top:150px;
+ }
+}
+@media only screen and (max-width:437px), (max-height:700px) and (max-width:437px){
+  #blocks{
+    margin-left:-30px;
+ }
+}
+@media only screen and (max-width:359px), (max-height:700px) and (max-width:359px){
+  #blocks{
+    margin-left:-45px;
+ }
 }
 </style>

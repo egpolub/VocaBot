@@ -1,7 +1,7 @@
 <template>
     <div id="block" >
       <div class="panel">
-        <button id="box" v-on:click="pin"><font-awesome-icon class="icon" :class={pinned:pinned_class} id="tack" :icon="['fas', 'thumbtack']"/>
+        <button v-if="!$isMobile()" id="box" v-on:click="pin"><font-awesome-icon class="icon" :class={pinned:pinned_class} id="tack" :icon="['fas', 'thumbtack']"/>
         </button>
       </div>
       <button v-on:click="send">Send http:// request</button>
@@ -71,10 +71,14 @@ button:hover{
 button:active{
   background-color:#ececec;
 }
-
+@media only screen and (max-width:394px){
+#box{
+  display: none;
+}
+}
 #block{
-  margin-top:60px;
-  width:390px;
+  margin-bottom:60px;
+  width:100%;
   height:calc(100vh - 700px);
   min-height:100px;
   background: rgba( 255, 255, 255, 0.55 );

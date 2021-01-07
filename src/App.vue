@@ -34,7 +34,7 @@
   margin-top:2px;
   margin-left:-2px;
   font-size:20px;
-   color: rgb(236, 217, 231);
+  color: rgb(236, 217, 231);
 }
 #tack.pinned{
    color: rgb(218, 150, 202);

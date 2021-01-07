@@ -74,7 +74,7 @@
       </div>
     </kinesis-container>
  <div id="design">
-   Designed by SilentGarden.Studio © 2020 VocaBot Inc.
+   Design by SilentGarden.studio © 2020 VocaBot Inc.
   </div>
     <div id="bg-blur">
     </div>

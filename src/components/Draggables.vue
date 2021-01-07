@@ -6,6 +6,7 @@
     v-bind="dragOptions"
     id="drag"
     :move="checkMove"
+    :disabled="$isMobile()"
   >
     <transition-group type="transition" :name="!drag ? 'flip-list' : null">
       <div v-for="(element, index) in list" :key="element.item">
@@ -82,7 +83,7 @@ export default {
     }
   },
   created () {
-    if (localStorage.getItem('verList')) {
+    if (localStorage.getItem('verList') && !this.$isMobile()) {
       this.list = JSON.parse(localStorage.getItem('verList'))
       this.list.forEach((element) => {
         this.dragAnim2.push(false)
@@ -149,6 +150,26 @@ export default {
 #drag {
   position: relative;
   margin-left: 60px;
-  margin-bottom: 60px;
+  width:390px;
+}
+@media only screen and (max-width:1120px){
+  #drag {
+  width: calc(100vw - 280px);
+  }
+}
+@media only screen and (max-width:638px), (max-height:700px) {
+  #drag {
+  width: calc(100vw - 120px);
+  }
+}
+@media only screen and (max-width:437px),(max-height:700px) and (max-width:437px) {
+   #drag {
+  width: calc(100vw - 60px);
+  }
+}
+@media only screen and (max-width:359px),(max-height:700px) and (max-width:359px){
+   #drag {
+  width: calc(100vw - 30px);
+  }
 }
 </style>

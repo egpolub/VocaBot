@@ -1,8 +1,7 @@
 <template>
     <div id="game">
 <div id="block">
-<span id="game">Game
-   </span><br>
+<span>Game</span><br>
  </div>
     </div>
 </template>
@@ -14,10 +13,6 @@ export default {
 </script>
 
 <style scoped>
-#game{
-    font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
-    font-size:200px;
-}
   #block{
   z-index: 2;
   width:calc(100% - 280px);
@@ -32,7 +27,12 @@ export default {
   margin-right:60px;
  }
  #game{
-     width:100%;
-     height:100%;
+    font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
+    font-size:200px;
+    width: 100%;
+    height:100%;
+    z-index:1;
+    position:absolute;
+    overflow: hidden;
  }
 </style>

@@ -10,7 +10,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faTelegramPlane } from '@fortawesome/free-brands-svg-icons'
 import { faGamepad, faBars, faCog, faMoon, faLightbulb, faThumbtack, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-
+import VueMobileDetection from 'vue-mobile-detection'
+Vue.use(VueMobileDetection)
 Vue.use(VueAxios, axios)
 Vue.use(VueKinesis)
 library.add(faTelegramPlane, faGamepad, faBars, faCog, faMoon, faLightbulb, faThumbtack, faSignOutAlt)

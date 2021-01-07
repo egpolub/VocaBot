@@ -2,7 +2,7 @@
     <div id="block" >
         <div class="user1 panel">
            <span id="dash"> Add new words:</span>
-           <button id="box" v-on:click="pin"><font-awesome-icon :class={pinned:pinned_class} class="icon" id="tack" :icon="['fas', 'thumbtack']"/>
+           <button v-if="!$isMobile()" id="box" v-on:click="pin"><font-awesome-icon :class={pinned:pinned_class} class="icon" id="tack" :icon="['fas', 'thumbtack']"/>
            </button>
            </div>
           <div id="add-translation">
@@ -104,8 +104,8 @@ font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
 
 }
 #block{
-  margin-top:60px;
-  width:390px;
+  margin-bottom:60px;
+   width:100%;
   height: 365px;
   background: rgba( 255, 255, 255, 0.55 );
     z-index: 2;
@@ -119,5 +119,9 @@ font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
   height: 65px;
   background: rgba( 255, 255, 255, 0.6 );
  }
-
+@media only screen and (max-width:394px){
+#box{
+  display: none;
+}
+}
 </style>
