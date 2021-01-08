@@ -133,7 +133,7 @@
     <changeSet id="1.0.6" author="egpolub">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM roles WHERE name='ROLE_USER' OR name='ROLE_ADMIN;
+                SELECT COUNT(*) FROM roles WHERE name='ROLE_USER' OR name='ROLE_ADMIN';
             </sqlCheck>
         </preConditions>
 
