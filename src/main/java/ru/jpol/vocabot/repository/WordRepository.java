@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.jpol.vocabot.entity.Word;
 
-
 import java.util.List;
 
 @Repository
