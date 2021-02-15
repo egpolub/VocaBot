@@ -48,6 +48,7 @@ export default {
 }
 
 .panel{
+  border-radius: 30px 30px 0 0;
   height: 65px;
   background: rgba( 255, 255, 255, 0.6 );
 }

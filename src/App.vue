@@ -35,24 +35,18 @@
   margin-left:-2px;
   font-size:20px;
   color: rgb(236, 217, 231);
+  transition:0.15s;
 }
 #tack.pinned{
-   color: rgb(218, 150, 202);
+   color: rgb(240, 149, 219);
 }
-#design{
-  position: absolute;
-  z-index:99999;
-bottom:0;
-font-size: 15px;
-color:#0d0f4280;
-right:20px;
-bottom:21px;
-   font-family:  Compose, Avenir, Helvetica, Arial, sans-serif;
+a{
+  text-decoration: none;
+  color:#99478b;
 }
 .panel{
-
-    cursor: move;
-    z-index: 2;
+  cursor: move;
+   z-index: 2;
   width:100%;
   backdrop-filter: blur( 15px );
   -webkit-backdrop-filter: blur( 15px );

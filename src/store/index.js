@@ -116,15 +116,15 @@ import router from '@/router/index.js';
                 router.push({ name: 'Dashboard' })
                 callback(result.origin, result.user)
               } else {
-                callback(result.origin, false)
+                callback(result.origin, null)
               }
             } else {
-              callback('*', false)
+              callback('*', null)
             }
           }
         }
         xhr.onerror = function () {
-          callback('*', false)
+          callback('*', null)
         }
         xhr.withCredentials = true
         xhr.send('bot_id=' + encodeURIComponent(options.bot_id) + (options.lang ? '&lang=' + encodeURIComponent(options.lang) : ''))
@@ -162,9 +162,17 @@ export default new Vuex.Store({
       window.Telegram.Login.auth(
         { bot_id: '1418138348:AAEPd2IvZz7S0blNkN_G1cIaYs4XTeGp20k', request_access: true },
         (data) => {
-          // Here you would want to validate data like described there https://core.telegram.org/widgets/login#checking-authorization
+        /*  if (data === false) { */
+          /* commit('SET_USER_DATA', null) */
+          /* return */
+          /* } */
           commit('SET_USER_DATA', data)
         }
+      )
+    },
+    logout ({ commit }) {
+      window.Telegram.Login.auth(
+        commit('SET_USER_DATA', null)
       )
     }
   }

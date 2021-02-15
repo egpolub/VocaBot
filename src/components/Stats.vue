@@ -39,18 +39,19 @@ border:0px;
 }
 
 #description{
-font-size:25px;
+font-size:22px;
 font-family: ComposeRegular, Avenir, Helvetica, Arial, sans-serif;
 }
 #dash{
 text-align: left;
 float:left;
-margin-top:21px;
+margin-top:17px;
 margin-left:30px;
-font-size:22px;
+font-size:27px;
 font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
 }
 .user{
+   border-radius: 30px 30px 0 0;
   height: 95px;
   background: rgba( 255, 255, 255, 0.6 );
  }

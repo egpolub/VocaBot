@@ -51,7 +51,7 @@ export default {
 }
 
 #welcome {
-  font-size: 25px;
+  font-size:22px;
   font-family: ComposeRegular, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -81,12 +81,12 @@ export default {
   position: relative;
   width: 0;
   margin-left: 32px;
-  top: 21px;
+  top: 17px;
   height: 80px;
 }
 
 #userName {
-  font-size: 22px;
+  font-size: 27px;
   font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
 }
 #pfp {

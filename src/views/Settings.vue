@@ -5,7 +5,7 @@
     <button id="logout">
        Log Out <font-awesome-icon id="signout" :icon="['fas', 'sign-out-alt']"/>
     </button>
-    <button id="darkMode">
+    <button id="darkMode" v-on:click="DarkMode">
        <font-awesome-icon class="icon" :icon="['fas', 'moon']"/>
     </button>
     <button id="lightMode">
@@ -17,7 +17,17 @@
 
 <script>
 export default {
-
+  methods: {
+    DarkMode () {
+      this.$emit('darkMode')
+    },
+    Logout () {
+      this.$store.dispatch('logout').then(() => {
+      }).catch(err => {
+        console.log(err.response.data.error)
+      })
+    }
+  }
 }
 </script>
 

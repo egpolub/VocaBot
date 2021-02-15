@@ -1,6 +1,8 @@
 <template>
  <div id="screen">
-   <div id="background">
+   <div id="background-dark">
+    </div>
+   <div id="background" v-bind:class="{dark:DarkMode}">
     </div>
   <div class="dashboard">
 
@@ -20,7 +22,12 @@
   </div>
 
   </div>
-  <router-view>
+   <div id="blob-container">
+     <img id="logo" src="@/assets/logo2.png">
+     <img src="../assets/blobRed.svg" id="blob">
+     <img src="../assets/blobRed.svg" id="blob2">
+  </div>
+  <router-view @darkMode="darkMode">
   </router-view>
 
  </div>
@@ -33,7 +40,8 @@ export default {
     return {
       blue: true,
       green: false,
-      red: false
+      red: false,
+      DarkMode: false
     }
   },
   created () {
@@ -48,6 +56,9 @@ export default {
     }
   },
   methods: {
+    darkMode () {
+      this.DarkMode = !this.DarkMode
+    },
     game () {
       if (!this.green) {
         this.$router.push({ name: 'Game' })
@@ -78,6 +89,33 @@ export default {
 </script>
 
 <style scoped>
+
+#blob2{
+  position: fixed;
+  left: -1012px;
+  top:-1214px;
+  opacity:0.25;
+}
+
+#logo{
+position: absolute;
+  left: 10px;
+  top:-15px;
+  width:220px;
+  z-index: 9;
+}
+#blob{
+  position: relative;
+  left: -1170px;
+  top:-1420px;
+  opacity: 1;
+}
+#blob-container{
+  width: 100vw;
+  height: 100%;
+  position: fixed;
+  pointer-events: none;
+}
 #button{
  background: rgba( 255, 255, 255, 0.4 );
   box-shadow: 0 8px 32px 0 rgba( 135, 31, 112, 0.07 );
@@ -103,15 +141,15 @@ export default {
 
 #tab3{
     bottom:calc(20% - 50px);
-     color:#f07b7b;
+     color:#fc9c76;
 }
 #tab3.activeButton{
-    background-color: #f07b7b;
+    background-color: #fc9c76;
     color:white;
 }
 
 #tab3:active.activeButton{
-  background-color: #d36b6b;
+  background-color: #fc9c76;
 }
 
 #tab2{
@@ -124,7 +162,7 @@ export default {
 }
 
 #tab2:active.activeButton{
-  background-color: #5fbe66;
+  background-color: #6bd672;
 }
 
 #tab1{
@@ -145,7 +183,7 @@ export default {
   overflow: hidden;
   border-radius:30%;
   width:160px;
-  top:60px;
+  bottom:60px;
   /*height:calc(100% - 120px);*/
   height:450px;
   position:fixed;
@@ -241,7 +279,20 @@ export default {
    width:100%;
    position: fixed;
    z-index:0;
-   background: linear-gradient(150deg,#edddee, #ecd7db);
+   background:#ecd7e1;
+   background: linear-gradient(0deg, #f1e6f1, #edd8ee);
+    transition:0.3s;
+ }
+ #background.dark{
+   opacity: 0;
+   /* background: linear-gradient(150deg,#2e2a2e, #3d3738);*/
+ }
+ #background-dark{
+    height:100%;
+   width:100%;
+   position: fixed;
+    z-index:0;
+      background: linear-gradient(150deg,#5d535e, #ecd7db);
  }
 
 </style>
