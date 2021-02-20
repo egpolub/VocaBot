@@ -83,7 +83,7 @@
       </div>
     </kinesis-container>
 
-     <img id="logo" src="@/assets/logo2.png">
+    <a href="/" id="link">  <img id="logo" src="@/assets/logo2.png"> </a>
      <img src="../assets/blobRed.svg" id="blob">
      <img src="../assets/blobRed.svg" id="blob2">
 
@@ -131,7 +131,9 @@ export default {
 }
 </script>
 <style scoped>
-
+#link{
+  z-index:9999;
+}
 #blob2{
   position: fixed;
   left: -1012px;
@@ -147,7 +149,6 @@ export default {
   top:-15px;
   width:220px;
   z-index: 9;
-   pointer-events: none;
 }
 #blob{
   position: fixed;
@@ -356,7 +357,9 @@ button{
   #learn{
     display: none;
   }
-
+#login-box{
+margin-top:2px;
+}
 }
 @media screen and (max-height:410px){
 #candy-wraper{
@@ -369,6 +372,9 @@ button{
 }
 #left-side{
   transform: scale(0.8);
+}
+#login-box{
+margin-top:2px;
 }
 }
 @media screen and (max-height:385px){
