@@ -1,0 +1,69 @@
+openapi: "3.0.0"
+info:
+  description: "VocaBot REST API"
+  version: "1.0.0"
+  title: "VocaBot"
+
+
+
+paths:
+  /vocabot/user:
+    get:
+      tags:
+        - "user"
+      description: "Get list of users"
+      operationId: "getListUsers"
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "403":
+          description: Forbidden.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No access rights to content.
+        "404":
+          description: Not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: List of users is empty
+
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The user ID.
+        firstname:
+          type: string
+          description: The user firstname.
+        username:
+          type: string
+          description: The user name.
+        email:
+          type: string
+          format: email
+          description: The user email.
+        created:
+          type: string
+          format: date-time
+          description: The user created.
+        updated:
+          type: string
+          format: date-time
+          description: The user last updated.
