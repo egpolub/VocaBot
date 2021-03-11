@@ -7,7 +7,7 @@ info:
 
 
 paths:
-  /vocabot/user:
+  /user:
     get:
       tags:
         - "user"
@@ -54,18 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - id
-                  - info
-                properties:
-                  id:
-                    type: integer
-                    format: int64
-                    description: ID of the created user
-                  info:
-                    type: string
-                    example: User created
+                $ref: "#/components/schemas/ResponseInfo"
         "400":
           description: Bad Request.
           content:
@@ -73,7 +62,7 @@ paths:
               schema:
                 type: string
                 example: Information about error
-  /vocabot/user/{id}:
+  /user/{id}:
     get:
       tags:
         - "user"
@@ -190,3 +179,16 @@ components:
           type: string
           format: date-time
           description: The user last updated.
+    ResponseInfo:
+      type: object
+      required:
+        - id
+        - info
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the created user
+        info:
+          type: string
+          example: User created

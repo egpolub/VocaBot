@@ -14,7 +14,7 @@ public class User extends BaseEntity{
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_roles", // TODO unknown reference value
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName =  "id")},
         inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
