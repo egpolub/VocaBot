@@ -30,13 +30,136 @@ paths:
                 type: string
                 example: No access rights to content.
         "404":
-          description: Not found.
+          description: Not Found.
           content:
             text/plain:
               schema:
                 type: string
                 example: List of users is empty
-
+    post:
+      tags:
+        - "user"
+      description: "Create user"
+      operationId: "Create user"
+      requestBody:
+        description: Information about user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - info
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    description: ID of the created user
+                  info:
+                    type: string
+                    example: User created
+        "400":
+          description: Bad Request.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Information about error
+  /vocabot/user/{id}:
+    get:
+      tags:
+        - "user"
+      description: "Get user by id"
+      operationId: "Get user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not Found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not found user by id.
+    patch:
+      tags:
+        - "user"
+      description: "Update user by id"
+      operationId: "Update user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Information about user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not Found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not found user by id.
+    delete:
+      tags:
+        - "user"
+      description: "Delete user by id"
+      operationId: "Delete user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No Content.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User deleted.
+        "404":
+          description: Not Found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not found user by id.
 
 components:
   schemas:
