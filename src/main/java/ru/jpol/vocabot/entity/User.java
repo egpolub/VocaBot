@@ -9,12 +9,17 @@ public class User extends BaseEntity{
     @Id
     private Long id;
 
-    private String firstName;
-    private String userName;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "email")
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", // TODO unknown reference value
+    @JoinTable(name = "user_roles",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName =  "id")},
         inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
@@ -27,20 +32,20 @@ public class User extends BaseEntity{
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

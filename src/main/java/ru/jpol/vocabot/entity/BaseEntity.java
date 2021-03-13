@@ -1,22 +1,29 @@
 package ru.jpol.vocabot.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
 public class BaseEntity {
 
-    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false)
     private Date created;
 
-    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated", nullable = false)
     private Date updated;
+
+    @PrePersist
+    protected void onCreate() {
+        updated = created = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updated = new Date();
+    }
 
     public Date getCreated() {
         return created;
