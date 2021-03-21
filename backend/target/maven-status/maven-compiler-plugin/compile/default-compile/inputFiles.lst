@@ -1,0 +1,17 @@
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\VocaBotApplication.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\entity\Role.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\entity\Word.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\repository\WordRepository.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\entity\User.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\service\WordService.java
+D:\JavaProjects\VocaBot\backend\target\generated-sources\openapi\src\main\java\io\tej\SwaggerCodgen\model\UserInfo.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\repository\UserRepository.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\service\RoleService.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\entity\BaseEntity.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\repository\RoleRepository.java
+D:\JavaProjects\VocaBot\backend\target\generated-sources\openapi\src\main\java\io\tej\SwaggerCodgen\api\UserApi.java
+D:\JavaProjects\VocaBot\backend\target\generated-sources\openapi\src\main\java\io\tej\SwaggerCodgen\api\ApiUtil.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\service\UserService.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\service\restImpl\UserServiceImpl.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\service\restImpl\WordServiceImpl.java
+D:\JavaProjects\VocaBot\backend\src\main\java\ru\jpol\vocabot\controller\UserController.java

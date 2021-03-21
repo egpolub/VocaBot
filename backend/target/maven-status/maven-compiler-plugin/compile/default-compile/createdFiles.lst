@@ -1,0 +1,17 @@
+io\tej\SwaggerCodgen\api\UserApi.class
+io\tej\SwaggerCodgen\model\UserInfo.class
+ru\jpol\vocabot\repository\RoleRepository.class
+ru\jpol\vocabot\repository\UserRepository.class
+ru\jpol\vocabot\service\UserService.class
+ru\jpol\vocabot\entity\Word.class
+ru\jpol\vocabot\service\restImpl\UserServiceImpl.class
+ru\jpol\vocabot\service\RoleService.class
+ru\jpol\vocabot\service\restImpl\WordServiceImpl.class
+ru\jpol\vocabot\entity\User.class
+io\tej\SwaggerCodgen\api\ApiUtil.class
+ru\jpol\vocabot\service\WordService.class
+ru\jpol\vocabot\VocaBotApplication.class
+ru\jpol\vocabot\repository\WordRepository.class
+ru\jpol\vocabot\entity\Role.class
+ru\jpol\vocabot\controller\UserController.class
+ru\jpol\vocabot\entity\BaseEntity.class
