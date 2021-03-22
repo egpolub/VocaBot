@@ -6,6 +6,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Error from '../views/Error.vue'
 import Game from '../views/Game.vue'
 import Settings from '../views/Settings.vue'
+import Main from '../views/Main.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -14,6 +15,11 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
+      name: 'Main',
+      component: Main
+    },
+    {
+      path: '/login',
       name: 'Login',
       component: Login
     },
@@ -54,8 +60,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem('user')
-  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+  if (to.matched.some(record => record.meta.requiresAuth) && (loggedIn === 'null' || loggedIn === null)) {
     next({ name: 'Login' })
+    // next()
   }
   next()
 })

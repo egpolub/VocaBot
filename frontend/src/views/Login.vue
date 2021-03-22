@@ -1,59 +1,68 @@
 <template>
   <div class="home" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" onselectstart="return false;" unselectable="on">
-    <img id="logo" src="@/assets/logo.png" alt="">
+
     <kinesis-container :duration="800" id="kinesis-cont">
       <div id="candy">
         <div id="candy-1"></div>
        <div id="candy-cont">
          <div id="candy-wraper">
-         <kinesis-element :strength="-7" type="translate" class="candy" id="candy-2">
-           <img id="candy-2a" :src="candy1" alt="">
+           <div id="left-side">
+          <kinesis-element :strength="-7" type="translate" class="candy" id="candy-2">
+           <img id="candy-2a" :src="squiglyBigBlue" alt="">
           </kinesis-element >
-         <kinesis-element :strength="-4" type="translate" class="candy" id="candy-3">
-         <img id="candy-3a" :src="candy1" alt="">
+           <kinesis-element :strength="10" type="translate" class="candy" id="candy-6">
+         <img id="candy-6a" :src="squiglyBigViolet" alt="">
           </kinesis-element >
-         <kinesis-element :strength="7" type="translate" class="candy" id="candy-4">
-          <img id="candy-4a" :src="candy2" alt="">
-          </kinesis-element >
-         <kinesis-element :strength="10" type="translate" class="candy" id="candy-5">
-           <img id="candy-5a" :src="candy2" alt="">
-          </kinesis-element >
-         <kinesis-element :strength="10" type="translate" class="candy" id="candy-6">
-         <img id="candy-6a" :src="candy1" alt="">
-          </kinesis-element >
-         <kinesis-element :strength="4" type="translate" class="candy" id="candy-7">
-          <img id="candy-7a" :src="candy2" alt="">
+           <kinesis-element :strength="4" type="translate" class="candy" id="candy-7">
+          <img id="candy-7a" :src="squiglySmallOrange" alt="">
          </kinesis-element >
-         <kinesis-element :strength="9" type="translate" class="candy" id="candy-8">
-          <img id="candy-8a" :src="candy3" alt="">
+          <kinesis-element :strength="9" type="translate" class="candy" id="candy-8">
+          <div id="candy-8a"/>
          </kinesis-element >
-         <kinesis-element :strength="-7" type="translate" class="candy" id="candy-9">
-          <img id="candy-9a" :src="candy3" alt="">
+          <kinesis-element  :strength="8" type="translate" class="candy" id="candy-10">
+          <div id="candy-10a"/>
          </kinesis-element >
-         <kinesis-element  :strength="8" type="translate" class="candy" id="candy-10">
-          <img id="candy-10a" :src="candy3" alt="">
-         </kinesis-element >
-         <kinesis-element :strength="3" type="translate" class="candy" id="candy-11">
-          <img id="candy-11a" :src="candy3" alt="">
-         </kinesis-element >
-         <kinesis-element :strength="-1" type="translate" class="candy" id="candy-12">
-          <img id="candy-12a" :src="candy3" alt="">
-         </kinesis-element >
-         <kinesis-element :strength="2"  type="translate" class="candy" id="candy-13">
-          <img id="candy-13a" :src="candy3" alt="">
+          <kinesis-element :strength="-1" type="translate" class="candy" id="candy-12">
+          <div id="candy-12a"/>
          </kinesis-element >
          <kinesis-element :strength="-4" type="translate" class="candy" id="candy-14">
-          <img id="candy-14a" :src="candy2" alt="">
+          <img id="candy-14a" :src="squiglySmallGreen" alt="">
          </kinesis-element >
          <kinesis-element :strength="-4" type="translate" class="candy" id="candy-15">
-          <img id="candy-15a" :src="candy2" alt="">
+          <img id="candy-15a" :src="squiglySmallYellow" alt="">
          </kinesis-element >
+           </div>
+
+       <div id="right-side">
+         <kinesis-element :strength="-4" type="translate" class="candy" id="candy-3">
+         <img id="candy-3a" :src="squiglyBigYellow" alt="">
+          </kinesis-element >
+         <kinesis-element :strength="7" type="translate" class="candy" id="candy-4">
+          <img id="candy-4a" :src="squiglyBigGreen" alt="">
+          </kinesis-element >
+         <kinesis-element :strength="10" type="translate" class="candy" id="candy-5">
+           <img id="candy-5a" :src="squiglyBigOrange" alt="">
+          </kinesis-element >
+
+         <kinesis-element :strength="-7" type="translate" class="candy" id="candy-9">
+          <div id="candy-9a"/>
+         </kinesis-element >
+
+         <kinesis-element :strength="3" type="translate" class="candy" id="candy-11">
+          <div id="candy-11a"/>
+         </kinesis-element >
+
+         <kinesis-element :strength="2"  type="translate" class="candy" id="candy-13">
+          <div id="candy-13a"/>
+         </kinesis-element >
+
          <kinesis-element :strength="6" type="translate" class="candy" id="candy-16">
-          <img id="candy-16a" :src="candy2" alt="">
+          <img id="candy-16a" :src="squiglySmallViolet" alt="">
          </kinesis-element >
          <kinesis-element :strength="10" type="translate" class="candy" id="candy-17">
-          <img id="candy-17a" :src="candy2" alt="">
+          <img id="candy-17a" :src="squiglySmallBlue" alt="">
          </kinesis-element >
+         </div>
           </div>
         </div>
          <div id="low-page">
@@ -61,43 +70,59 @@
            <div id="login-text-box">
             <div id="login-text">
               Ready to start? <br>
-              To use Voca™ you have to login with your <br><span id="telegram-text"><font-awesome-icon :icon="['fab', 'telegram-plane']"/> Telegram</span> account.
+              To use Voca™ you have to log in with your <br><span id="telegram-text"><font-awesome-icon :icon="['fab', 'telegram-plane']"/> Telegram</span> account.
             </div>
            </div>
             <button v-on:click="login">
               Login
             </button>
             <br>
-            <span id="learn"> Learn more <span id="here"> here </span> </span>
+            <span id="learn"> Learn more <a href="/" id="here"> here </a> </span>
           </div>
          </div>
       </div>
     </kinesis-container>
 
-    <div id="bg-blur">
-    </div>
+    <a href="/" id="link">  <img id="logo" src="@/assets/logo2.png"> </a>
+     <img src="../assets/blobRed.svg" id="blob">
+     <img src="../assets/blobRed.svg" id="blob2">
+
   </div>
 </template>
 <script>
-import candy1 from '@/assets/candy2.png'
-import candy2 from '@/assets/candy3.png'
-import candy3 from '@/assets/candy4.png'
+import squiglyBigBlue from '@/assets/squigly-big-blue.png'
+import squiglyBigOrange from '@/assets/squigly-big-orange.png'
+import squiglyBigYellow from '@/assets/squigly-big-yellow.png'
+import squiglyBigGreen from '@/assets/squigly-big-green.png'
+import squiglyBigViolet from '@/assets/squigly-big-violet.png'
 
-// @ is an alias to /src
+import squiglySmallBlue from '@/assets/squigly-small-blue.png'
+import squiglySmallOrange from '@/assets/squigly-small-orange.png'
+import squiglySmallYellow from '@/assets/squigly-small-yellow.png'
+import squiglySmallGreen from '@/assets/squigly-small-green.png'
+import squiglySmallViolet from '@/assets/squigly-small-violet.png'
+
 export default {
   name: 'Home',
   data () {
     return {
-      candy1,
-      candy2,
-      candy3,
-      code: ''
+
+      squiglyBigBlue,
+      squiglyBigOrange,
+      squiglyBigYellow,
+      squiglyBigGreen,
+      squiglyBigViolet,
+      squiglySmallOrange,
+      squiglySmallYellow,
+      squiglySmallGreen,
+      squiglySmallViolet,
+      squiglySmallBlue
+      /* code: '' */
     }
   },
   methods: {
     login () {
       this.$store.dispatch('login').then(() => {
-      //  this.$router.push({ name: 'Dashboard' })
       }).catch(err => {
         console.log(err.response.data.error)
       })
@@ -106,14 +131,34 @@ export default {
 }
 </script>
 <style scoped>
-#logo{
-  position:relative;
-  z-index:9;
-   margin-top:-5px;
-   width:200px;
-   margin-left:20px;
-   float:left;
+#link{
+  z-index:9999;
 }
+#blob2{
+  position: fixed;
+  left: -1012px;
+  top:-1214px;
+  opacity:0.25;
+   width:1920px;
+   pointer-events: none;
+}
+
+#logo{
+  position: fixed;
+  left: 10px;
+  top:-15px;
+  width:220px;
+  z-index: 9;
+}
+#blob{
+  position: fixed;
+  left: -1170px;
+  top:-1420px;
+  width:1920px;
+  z-index: 8;
+   pointer-events: none;
+}
+
 #candy-wraper{
   width:300px;
   height: 340px;
@@ -121,12 +166,306 @@ export default {
   margin: 0 auto;
   position: relative;
 }
+#login-box{
+  z-index: 2;
+  width:300px;
+  height: 340px;
+  background: rgba( 255, 255, 255, 0.5 );
+
+  backdrop-filter: blur( 15px );
+  -webkit-backdrop-filter: blur( 15px );
+  border-radius: 30px;
+  top:50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: 0 auto;
+  position: relative;
+}
+#login-text{
+  font-size: 25.5px;
+  margin-left:5.3%;
+  margin-right:5%;
+  line-height: 1.7;
+  margin-top:38px;
+}
+#login-text-box{
+ background: rgba( 255, 255, 255, 1 );
+ text-align: center;
+ border-radius: 30px 30px 0px 0px;
+ border: 1px solid rgba( 255, 255, 255, 0 );
+ height:240px;
+}
+button{
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.03 );
+  background-color: white;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  height:45px;
+  width:75%;
+  border-radius: 10px;
+  font-size: 25px;
+  color:#393c65;
+  font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
+  margin-top:24px;
+  outline:none;
+  transition: 0.2s;
+}
+#learn{
+  line-height: 5.7;
+  z-index:99;
+  font-size: 20px;
+  font-family: ComposeRegular, Avenir, Helvetica, Arial, sans-serif;
+}
+@media screen and (max-width: 900px){
+#candy-wraper{
+
+   top:calc(50% - 135px);
+}
+#right-side{
+  transform: scale(0.9);
+  margin-left:20px;
+}
+#left-side{
+  transform: scale(0.9);
+}
+}
+@media screen and (max-width: 817px){
+#candy-wraper{
+
+   top:calc(50% - 130px);
+}
+#right-side{
+  transform: scale(0.8);
+  margin-left:40px;
+}
+#left-side{
+  transform: scale(0.8);
+}
+}
+@media screen and (max-width: 749px){
+#candy-wraper{
+
+   top:calc(50% - 115px);
+}
+#right-side{
+  transform: scale(0.7);
+  margin-left:80px;
+}
+#left-side{
+  transform: scale(0.7);
+   margin-left:-10px;
+}
+}
+
+@media screen and (max-width: 700px){
+#candy-wraper{
+  display: none;
+}
+}
+@media screen and (max-width: 550px){
+#login-box{
+margin-top:10px;
+}
+}
+@media screen and (max-width: 500px){
+#login-box{
+margin-top:13px;
+}
+}
+@media screen and (max-width: 356px){
+#login-box{
+width:270px;
+  height: 305px;
+}
+#login-text{
+   margin-left:5%;
+  margin-right:5%;
+  font-size: 23px;
+   margin-top:28px;
+}
+#login-text-box{
+  height:205px;
+}
+}
+
+@media screen and (max-width: 303px){
+#login-box{
+  width:245px;
+  height: 282px;
+}
+#login-text{
+   margin-left:2.5%;
+  margin-right:2.5%;
+  font-size: 22px;
+   margin-top:25px;
+}
+#login-text-box{
+  height:193px;
+}
+button{
+  margin-top:20px;
+}
+}
+
+@media screen and (max-height:570px){
+  #blob{
+     width:1890px;
+  /*display: none;*/
+  }
+  #blob2{
+     width:1890px;
+  /*display: none;*/
+  }
+  #logo{
+  width:180px;
+}
+}
+@media screen and (max-height:538px){
+  #blob{
+     width:1880px;
+  }
+  #blob2{
+     width:1880px;
+  }
+  #logo{
+     width:160px;
+  }
+}
+@media screen and (max-height:490px){
+  #blob{
+     width:1870px;
+  }
+  #blob2{
+     width:1870px;
+  }
+  #logo{
+     width:140px;
+  }
+}
+@media screen and (max-height:490px){
+  #blob{
+     width:1870px;
+  }
+  #blob2{
+     width:1870px;
+  }
+  #logo{
+     width:140px;
+  }
+}
+@media screen and (max-height:473px){
+  #learn{
+    display: none;
+  }
+#login-box{
+margin-top:2px;
+}
+}
+@media screen and (max-height:410px){
+#candy-wraper{
+
+   top:calc(50% - 130px);
+}
+#right-side{
+  transform: scale(0.8);
+  margin-left:40px;
+}
+#left-side{
+  transform: scale(0.8);
+}
+#login-box{
+margin-top:2px;
+}
+}
+@media screen and (max-height:385px){
+#login-box{
+width:270px;
+  height: 305px;
+}
+#login-text{
+   margin-left:5%;
+  margin-right:5%;
+  font-size: 23px;
+   margin-top:28px;
+}
+#login-text-box{
+  height:205px;
+}
+#login-box{
+margin-top:2px;
+}
+ #blob{
+     width:1860px;
+  }
+  #blob2{
+     width:1860px;
+  }
+  #logo{
+     width:120px;
+  left: 7px;
+  top:-10px;
+  }
+#candy-wraper{
+
+   top:calc(50% - 110px);
+}
+#right-side{
+  transform: scale(0.7);
+  margin-left:80px;
+}
+#left-side{
+  transform: scale(0.7);
+   margin-left:-10px;
+}
+}
+
+@media screen and (max-height:343px){
+#login-box{
+  width:245px;
+  height: 282px;
+}
+#login-text{
+   margin-left:2.5%;
+  margin-right:2.5%;
+  font-size: 22px;
+   margin-top:25px;
+}
+#login-text-box{
+  height:193px;
+}
+button{
+  margin-top:20px;
+}
+}
+@media screen and (max-height:315px){
+#login-box{
+  width:245px;
+  height: 252px;
+}
+#login-text{
+   margin-left:2.5%;
+  margin-right:2.5%;
+  font-size: 22px;
+   margin-top:20px;
+}
+#login-text-box{
+  height:183px;
+}
+button{
+  margin-top:14px;
+  height:40px;
+}
+  #candy-wraper{
+  display: none;
+}
+}
+
 #candy-cont{
  overflow:hidden;
  position: fixed;
  height: 100vh;
  top:0;
- left:-190px;
+ left:-200px;
  right:0;
  bottom:0;
  z-index: 2;
@@ -144,14 +483,10 @@ export default {
 }
 #here{
   color:#0088cc;
+  transition: 0.15s;
   text-decoration: underline;
 }
-#learn{
-  line-height: 5.7;
-  z-index:99;
-  font-size: 20px;
-  font-family: ComposeRegular, Avenir, Helvetica, Arial, sans-serif;
-}
+
 .candy{
   position:absolute;
   text-align: center;
@@ -198,8 +533,10 @@ export default {
   top:75px;
 }
 #candy-13a{
-  width:55px;
-  transform: rotatez(28deg);
+  border-radius: 50%;
+   width:33px;
+  height:33px;
+   background-color:#bf9efc ;
 }
 
 #candy-12{
@@ -207,8 +544,10 @@ export default {
   top:85px;
 }
 #candy-12a{
-  width:55px;
- transform: rotatez(28deg);
+  border-radius: 50%;
+   width:33px;
+  height:33px;
+   background-color:#fcdd97 ;
 }
 
 #candy-11{
@@ -216,8 +555,10 @@ export default {
   top:200px;
 }
 #candy-11a{
-  width:70px;
- transform: rotatez(28deg);
+  border-radius: 50%;
+   width:43px;
+  height:43px;
+   background-color:#84c2f1 ;
 }
 
 #candy-10{
@@ -225,8 +566,11 @@ export default {
   top:190px;
 }
 #candy-10a{
-  width:65px;
- transform: rotatez(28deg);
+
+  border-radius: 50%;
+   width:40px;
+  height:40px;
+   background-color:#84c2f1 ;
 }
 
 #candy-9{
@@ -234,8 +578,10 @@ export default {
   top:-20px;
 }
 #candy-9a{
-  width:60px;
- transform: rotatez(28deg);
+  border-radius: 50%;
+   width:40px;
+  height:40px;
+   background-color:#fc9c76 ;
 }
 
 #candy-8{
@@ -243,8 +589,10 @@ export default {
   top:50px;
 }
 #candy-8a{
-  width:70px;
- transform: rotatez(28deg);
+  background-color:#91d4d6 ;
+  border-radius: 50%;
+  width:45px;
+  height:45px;
 }
 
 #candy-7{
@@ -313,15 +661,6 @@ width:250px;
   z-index: 2;
 }
 
-#bg-blur{
-  backdrop-filter: blur( 50px );
- -webkit-backdrop-filter: blur( 50px );
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 1;
-}
-
 #low-page{
  overflow:hidden;
  position: fixed;
@@ -341,62 +680,21 @@ width:250px;
   opacity: 0.05;
   height: 100vh;
 }
-#login-text-box{
- background: rgba( 255, 255, 255, 0.27 );
- text-align: center;
- border-radius: 30px 30px 0px 0px;
- border: 1px solid rgba( 255, 255, 255, 0 );
- height:240px;
-}
+
 #telegram-text{
  color:#0088cc;
 }
 .home{
-  background: linear-gradient(150deg,#ebd0ec, #eeccd1);
+  background: linear-gradient(0deg, #f1e6f1, #edd8ee);
   height: 100%;
   overflow:hidden;
 }
-#login-text{
-  font-size: 24px;
-  margin-top:12%;
-  margin-left:7.5%;
-  margin-right:7.5%;
-  line-height: 1.7;
-}
-#login-box{
-  z-index: 2;
-  width:300px;
-  height: 340px;
-  background: rgba( 255, 255, 255, 0.25 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.1 );
-  backdrop-filter: blur( 15px );
-  -webkit-backdrop-filter: blur( 15px );
-  border-radius: 30px;
- /*border: 1px solid rgba( 255, 255, 255, 0.18 );*/
-  top:50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  margin: 0 auto;
-  position: relative;
-}
+
 #icon{
   width:24px;
   height: 24px;
 }
-button{
-  background-color: white;
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
-  height:45px;
-  width:75%;
-  border-radius: 10px;
-  font-size: 23px;
-  color:#393c65;
-  font-family: Compose, Avenir, Helvetica, Arial, sans-serif;
-margin-top:25px;
- outline:none;
-   transition: 0.2s;
-}
+
 button:hover{
   background-color:#f6f6f6;
 

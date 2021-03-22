@@ -8,9 +8,45 @@
 </template>
 
 <style>
+.shake {
+  animation: shake 0.25s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+}
+@keyframes shake {
+  20% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  40% {
+    transform: translate3d(2px, 0, 0);
+  }
+  60%{
+    transform: translate3d(-4px, 0, 0);
+  }
+  80%{
+    transform: translate3d(4px, 0, 0);
+  }
+  100%{
+    transform: translate3d(0px, 0, 0);
+  }
+}
+#tack{
+  transform: rotateZ(45deg);
+  margin-top:2px;
+  margin-left:-2px;
+  font-size:20px;
+  color: rgb(236, 217, 231);
+  transition:0.15s;
+}
+#tack.pinned{
+   color: rgb(240, 149, 219);
+}
+a{
+  text-decoration: none;
+  color:#99478b;
+}
 .panel{
-    cursor: move;
-    z-index: 2;
+  cursor: move;
+   z-index: 2;
   width:100%;
   backdrop-filter: blur( 15px );
   -webkit-backdrop-filter: blur( 15px );
@@ -31,12 +67,12 @@
 @font-face {
   font-family: "Compose";
   src: local("Compose"),
-  url(./assets/Compose/Compose-Bold.ttf) format("truetype");
+  url(/src/assets/Compose/Compose-Bold.ttf) format("truetype");
 }
 @font-face {
   font-family: "ComposeRegular";
   src: local("ComposeRegular"),
-  url(./assets/Compose/Compose-Regular.ttf) format("truetype");
+  url(/src/assets/Compose/Compose-Regular.ttf) format("truetype");
 }
 
 </style>
