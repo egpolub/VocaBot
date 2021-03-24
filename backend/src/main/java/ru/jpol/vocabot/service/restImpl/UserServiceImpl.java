@@ -86,4 +86,9 @@ public class UserServiceImpl implements UserService, RoleService {
         userRepository.deleteById(id);
         logger.info("User by id: {} deleted", id);
     }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
+        logger.info("User by id: {} updated", user.getId());
+    }
 }

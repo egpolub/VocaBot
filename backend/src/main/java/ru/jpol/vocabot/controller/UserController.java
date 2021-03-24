@@ -2,6 +2,7 @@ package ru.jpol.vocabot.controller;
 
 import io.tej.SwaggerCodgen.api.UserApi;
 import io.tej.SwaggerCodgen.model.UserInfo;
+import org.hibernate.PropertyValueException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,24 +27,23 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<Void> createUser(UserInfo userInfo) {
-        if (userInfo.getId() == null)
-        {
+        if (userInfo.getId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Invalid value of the request body, id is empty");
         }
-        if (userService.findUser(userInfo.getId()) != null)
-        {
+        if (userService.findUser(userInfo.getId()) != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     String.format("user with id = %d already exists", userInfo.getId()));
         }
+
         User user = new User();
         BeanUtils.copyProperties(userInfo, user);
-        userService.createUser(user);
-
-        if (userService.findUser(user.getId()) == null)
-        {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Something went wrong");
+        try {
+            userService.createUser(user);
+        }
+        catch (PropertyValueException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    String.format("user with id = %d already exists", user.getId()));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -98,7 +98,20 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<UserInfo> updateUserById(Long id, UserInfo userInfo) {
-        //TODO implement dao method for update user
-        return null;
+        User user = userService.findUser(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("user with id = %d not found", id));
+        }
+
+        if (!id.equals(userInfo.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "User id in the path and in the request body should be the same");
+        }
+        BeanUtils.copyProperties(userInfo, user, "id");
+
+        userService.updateUser(user);
+
+        return ResponseEntity.ok().build();
     }
 }
