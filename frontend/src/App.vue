@@ -67,12 +67,12 @@ a{
 @font-face {
   font-family: "Compose";
   src: local("Compose"),
-  url(/src/assets/Compose/Compose-Bold.ttf) format("truetype");
+  url('./assets/Compose/Compose-Bold.ttf') format("truetype");
 }
 @font-face {
   font-family: "ComposeRegular";
   src: local("ComposeRegular"),
-  url(/src/assets/Compose/Compose-Regular.ttf) format("truetype");
+  url('./assets/Compose/Compose-Regular.ttf') format("truetype");
 }
 
 </style>
