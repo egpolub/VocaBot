@@ -44,14 +44,10 @@ public class UserServiceImpl implements UserService, RoleService {
         return role;
     }
 
+
     @Override
     public List<User> findAllUser() {
         List<User> users = userRepository.findAll();
-        if (users == null)
-        {
-            logger.info("Table <users> is empty");
-            return null;
-        }
         logger.info("Found {} users", users.size());
 
         return users;

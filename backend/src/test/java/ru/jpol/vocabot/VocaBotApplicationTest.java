@@ -21,6 +21,8 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.jpol.vocabot.entity.User;
+import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,6 +39,9 @@ public abstract class VocaBotApplicationTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public UserServiceImpl userService;
 
     @Container
     public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:9.4");
@@ -69,8 +74,25 @@ public abstract class VocaBotApplicationTest {
         liquibase.close();
     }
 
-
     protected void cleanUp(String ...tableName) {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
+    }
+
+    /**
+     * Create and save to db 5 users
+     */
+    protected void config() {
+        User user;
+        for (long i = 0; i < 5; i++) {
+            user = new User();
+            user.setId(i);
+            user.setEmail("test" + i + "@test.com");
+            user.setFirstname("firstname" + i);
+            user.setUsername("username" + i);
+
+            userService.createUser(user);
+        }
+
+
     }
 }
