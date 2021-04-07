@@ -77,7 +77,7 @@
             </column>
 
             <column name="chatid" type="BIGINT">
-                <constraints primaryKey="false" nullable="true"/>
+                <constraints primaryKey="false" nullable="false"/>
             </column>
 
             <column name="date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValue="NOW()">

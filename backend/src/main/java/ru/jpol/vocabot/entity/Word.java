@@ -6,7 +6,7 @@ import java.util.Date;
 @Entity
 public class Word {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     private Long chatID;
@@ -43,5 +43,9 @@ public class Word {
 
     public Date getDate() {
         return date;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -9,9 +9,9 @@ public interface WordService {
 
     List<Word> findAllWord(Long chatID);
 
-    void createWord(Long chatID, String word, String translation);
+    void createWord(Word word);
 
-    void updateWord(Long chatID, String word, String translation);
+    void updateWord(Word word);
 
     void deleteWord(Long chatID, String word, String translation);
 }
