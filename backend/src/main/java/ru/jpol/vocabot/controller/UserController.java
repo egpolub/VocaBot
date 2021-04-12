@@ -33,7 +33,7 @@ public class UserController implements UserApi{
         }
         if (userService.findUser(userInfo.getId()) != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    String.format("user with id = %d already exists", userInfo.getId()));
+                    String.format("User with id = %d already exists", userInfo.getId()));
         }
 
         User user = new User();
@@ -43,7 +43,7 @@ public class UserController implements UserApi{
         }
         catch (PropertyValueException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    String.format("user with id = %d already exists", user.getId()));
+                    String.format("User with id = %d already exists", user.getId()));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -53,7 +53,7 @@ public class UserController implements UserApi{
     public ResponseEntity<Void> deleteUserById(Long id) {
         if (userService.findUser(id) == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("user with id = %d not found", id));
+                    String.format("User with id = %d not found", id));
         }
 
         userService.deleteUser(id);
@@ -98,16 +98,17 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<UserInfo> updateUserById(Long id, UserInfo userInfo) {
-        User user = userService.findUser(id);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("user with id = %d not found", id));
-        }
-
         if (!id.equals(userInfo.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "User id in the path and in the request body should be the same");
         }
+
+        User user = userService.findUser(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("User with id = %d not found", id));
+        }
+
         BeanUtils.copyProperties(userInfo, user, "id");
 
         userService.updateUser(user);

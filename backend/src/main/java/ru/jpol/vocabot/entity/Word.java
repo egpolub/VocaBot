@@ -1,51 +1,47 @@
 package ru.jpol.vocabot.entity;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-public class Word {
+public class Word extends BaseEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private Long chatID;
+    @Column(name = "chat_id")
+    private Long chatId;
     private String word;
     private String translation;
-    private Date date;
 
-
-    public Word() {
-    }
-
-    public Word(Long chatID, String word, String translation) {
-        this.chatID = chatID;
-        this.word = word;
-        this.translation = translation;
-        this.date = new Date();
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Long getChatID() {
-        return chatID;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 
     public String getWord() {
         return word;
     }
 
+    public void setWord(String word) {
+        this.word = word;
+    }
+
     public String getTranslation() {
         return translation;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTranslation(String translation) {
+        this.translation = translation;
     }
 }

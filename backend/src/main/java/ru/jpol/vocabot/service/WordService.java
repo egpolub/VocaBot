@@ -7,11 +7,16 @@ import java.util.List;
 
 public interface WordService {
 
-    List<Word> findAllWord(Long chatID);
+    /**
+     * Find all word by chat id
+     * @param chatId - user chat id
+     * @return empty list if not found words
+     */
+    List<Word> findAllWord(Long chatId);
 
     void createWord(Word word);
 
     void updateWord(Word word);
 
-    void deleteWord(Long chatID, String word, String translation);
+    void deleteWord(Long id);
 }

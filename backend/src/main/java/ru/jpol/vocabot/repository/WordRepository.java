@@ -9,9 +9,6 @@ import java.util.List;
 
 @Repository
 public interface WordRepository extends JpaRepository<Word, Long> {
-    List<Word> findByChatID(Long chatID);
-
-    // XXX problem place. Current implementation should change!
-    void deleteByChatIDAndWordAndTranslation(Long chatID, String word, String translation);
+    List<Word> findByChatId(Long chatId);
 
 }

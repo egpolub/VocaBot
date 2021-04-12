@@ -21,10 +21,11 @@ public class WordServiceImpl implements WordService {
         this.wordRepository = wordRepository;
     }
 
+
     @Override
-    public List<Word> findAllWord(Long chatID) {
-        List<Word> words = wordRepository.findByChatID(chatID);
-        logger.info("Found {} words by chat id = {}", words.size(), chatID);
+    public List<Word> findAllWord(Long chatId) {
+        List<Word> words = wordRepository.findByChatId(chatId);
+        logger.info("Found {} words by chat id = {}", words.size(), chatId);
 
         return words;
     }
@@ -32,23 +33,21 @@ public class WordServiceImpl implements WordService {
     @Override
     public void createWord(Word word) {
         wordRepository.save(word);
-        logger.info("Word with chat id = {}, word = {}, translation = {} added",
-                word.getChatID(), word.getWord(), word.getTranslation());
+        logger.info("Word with id = {}, chat id = {}, word = {}, translation = {} added",
+                word.getId(), word.getChatId(), word.getWord(), word.getTranslation());
     }
 
     @Override
     public void updateWord(Word word) {
-        // TODO think about additional properties for entity word. Updated and Created
         // XXX duplicate code. Forced decision for current bot realisation
         wordRepository.save(word);
-        logger.info("Word with chat id = {}, word = {}, translation = {} updated",
-                word.getChatID(), word.getWord(), word.getTranslation());
+        logger.info("Word with id = {}, chat id = {}, word = {}, translation = {} updated",
+                word.getId(), word.getChatId(), word.getWord(), word.getTranslation());
     }
 
     @Override
-    public void deleteWord(Long chatID, String word, String translation) {
-        wordRepository.deleteByChatIDAndWordAndTranslation(chatID, word, translation);
-        logger.info("Word by chat id = {}, word = {}, translation = {} deleted",
-                chatID, word, translation);
+    public void deleteWord(Long id) {
+        wordRepository.deleteById(id);
+        logger.info("Word by id = {} deleted", id);
     }
 }
