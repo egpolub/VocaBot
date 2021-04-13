@@ -113,7 +113,7 @@ public class UserController implements UserApi{
     }
 
     @Override
-    public ResponseEntity<UserInfo> updateUserById(Long id, UserInfo userInfo) {
+    public ResponseEntity<Void> updateUserById(Long id, UserInfo userInfo) {
         logger.info(String.format("Request updateUserById() with id = %d, user_id = %d",
                 id, userInfo.getId()));
 

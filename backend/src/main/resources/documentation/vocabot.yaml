@@ -92,10 +92,6 @@ paths:
       responses:
         "200":
           description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserInfo"
         "404":
           description: Not Found.
 
