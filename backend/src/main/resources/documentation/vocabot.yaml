@@ -115,6 +115,129 @@ paths:
           description: Not Found.
 
 
+  /word:
+    post:
+      tags:
+        - "word"
+      description: "Create word"
+      operationId: "Create word"
+      requestBody:
+        description: Information about Word
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordInfo'
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    description: The word ID. Created after adding to the system
+        "400":
+          description: Bad Request.
+
+  /word/{chatId}:
+    get:
+      tags:
+        - "word"
+      description: "Get list of words by chatId"
+      operationId: "Get list of words by chatId"
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WordInfo"
+        "204":
+          description: Not Content.
+
+    patch:
+      tags:
+        - "word"
+      description: "Update word by chatId"
+      operationId: "Update word by chatId"
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Information about Word
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        "404":
+          description: Not Found.
+
+    delete:
+      tags:
+        - "word"
+      description: "Delete all words by chatId"
+      operationId: "Delete all words by chatId"
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
+  /word/{id}:
+    delete:
+      tags:
+        - "word"
+      description: "Delete word by id"
+      operationId: "Delete word by id"
+      parameters:
+        - name: id
+          in: path
+          description: The word ID. Created after adding to the system
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
 components:
   schemas:
     UserInfo:
@@ -137,6 +260,37 @@ components:
           type: string
           format: email
           description: The user email.
+        created:
+          type: string
+          format: date-time
+          description: The user created.
+        updated:
+          type: string
+          format: date-time
+          description: The user last updated.
+
+    WordInfo:
+      description: Information about Word
+      type: object
+      required:
+        - chatId
+        - word
+        - translation
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The word ID. Created after adding to the system
+        chatId:
+          type: integer
+          format: int64
+          description: The user ID.
+        word:
+          type: string
+          description: The word.
+        translation:
+          type: string
+          description: The translation of a word.
         created:
           type: string
           format: date-time
