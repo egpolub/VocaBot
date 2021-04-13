@@ -294,8 +294,8 @@ components:
         created:
           type: string
           format: date-time
-          description: The user created.
+          description: The word created.
         updated:
           type: string
           format: date-time
-          description: The user last updated.
+          description: The word last updated.
