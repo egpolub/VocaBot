@@ -3,6 +3,8 @@ package ru.jpol.vocabot.controller;
 import io.tej.SwaggerCodgen.api.UserApi;
 import io.tej.SwaggerCodgen.model.UserInfo;
 import org.hibernate.PropertyValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ import java.util.List;
 
 @RestController
 public class UserController implements UserApi{
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     private final UserServiceImpl userService;
 
     @Autowired
@@ -27,13 +31,17 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<Void> createUser(UserInfo userInfo) {
+        logger.info(String.format("Request createUser() with user_id = %d", userInfo.getId()));
+
         if (userInfo.getId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Invalid value of the request body, id is empty");
+            String message = "Invalid value of the request body, id is empty";
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
         if (userService.findUser(userInfo.getId()) != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    String.format("User with id = %d already exists", userInfo.getId()));
+            String message = String.format("User with id = %d already exists", userInfo.getId());
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
         }
 
         User user = new User();
@@ -42,8 +50,9 @@ public class UserController implements UserApi{
             userService.createUser(user);
         }
         catch (PropertyValueException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    String.format("User with id = %d already exists", user.getId()));
+            String message = String.format("User with id = %d already exists", user.getId());
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -51,9 +60,12 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<Void> deleteUserById(Long id) {
+        logger.info(String.format("Request deleteUserById() with id = %d", id));
+
         if (userService.findUser(id) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("User with id = %d not found", id));
+            String message = String.format("User with id = %d not found", id);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
         userService.deleteUser(id);
@@ -63,6 +75,8 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<List<UserInfo>> getListUsers() {
+        logger.info("Request getListUsers()");
+
         List<User> users = userService.findAllUser();
         List<UserInfo> resultUsers = new ArrayList<>();
 
@@ -82,6 +96,8 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<UserInfo> getUserById(Long id) {
+        logger.info(String.format("Request getUserById() with id = %d", id));
+
         User user = userService.findUser(id);
         if (user == null) {
             return ResponseEntity.noContent().build();
@@ -98,15 +114,20 @@ public class UserController implements UserApi{
 
     @Override
     public ResponseEntity<UserInfo> updateUserById(Long id, UserInfo userInfo) {
+        logger.info(String.format("Request updateUserById() with id = %d, user_id = %d",
+                id, userInfo.getId()));
+
         if (!id.equals(userInfo.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "User id in the path and in the request body should be the same");
+            String message = "User id in the path and in the request body should be the same";
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
 
         User user = userService.findUser(id);
         if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("User with id = %d not found", id));
+            String message = String.format("User with id = %d not found", id);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
         BeanUtils.copyProperties(userInfo, user, "id");
