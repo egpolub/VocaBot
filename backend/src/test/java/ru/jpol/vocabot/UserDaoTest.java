@@ -3,18 +3,13 @@ package ru.jpol.vocabot;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.jpol.vocabot.entity.Role;
 import ru.jpol.vocabot.entity.User;
-import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 
 import java.util.List;
 
 
-public class UserDaoTest extends VocaBotApplicationTest{
-
-    @Autowired
-    UserServiceImpl userRepository;
+public class UserDaoTest extends VocaBotApplicationTest {
 
     @AfterEach
     public void cleanByTableName() {
@@ -26,10 +21,10 @@ public class UserDaoTest extends VocaBotApplicationTest{
         /*
           ROLE_USER, ROLE_ADMIN must exist in table Roles
          */
-        Role userRole = userRepository.findRole("ROLE_USER");
-        Role adminRole = userRepository.findRole("ROLE_ADMIN");
+        Role userRole = userService.findRole("ROLE_USER");
+        Role adminRole = userService.findRole("ROLE_ADMIN");
 
-        Assertions.assertNull(userRepository.findRole("ROLE_UNKNOWN"));
+        Assertions.assertNull(userService.findRole("ROLE_UNKNOWN"));
 
         Assertions.assertEquals("ROLE_USER", userRole.getName());
         Assertions.assertEquals("ROLE_ADMIN", adminRole.getName());
@@ -43,10 +38,10 @@ public class UserDaoTest extends VocaBotApplicationTest{
 
     @Test
     public void testFindUser() {
-        config();
+        config_01();
 
         List<User> users = userService.findAllUser();
-        Assertions.assertEquals(5, users.size());
+        Assertions.assertEquals(defaultListSize, users.size());
 
         User testUser = new User();
         testUser.setId(0L);
@@ -67,11 +62,11 @@ public class UserDaoTest extends VocaBotApplicationTest{
     
     @Test
     public void testUpdateUser() {
-        config();
+        config_01();
 
         User user = userService.findUser(0L);
         user.setEmail("updatedTest@test.com");
-        userRepository.updateUser(user);
+        userService.updateUser(user);
         
         User updatedUser = userService.findUser(user.getId());
         Assertions.assertEquals(user.getId(), updatedUser.getId());
@@ -86,20 +81,20 @@ public class UserDaoTest extends VocaBotApplicationTest{
 
     @Test
     public void testDeleteUser() {
-        config();
+        config_01();
 
-        Assertions.assertEquals(5, userRepository.findAllUser().size());
+        Assertions.assertEquals(defaultListSize, userService.findAllUser().size());
 
-        userRepository.deleteUser(0L);
-        userRepository.deleteUser(1L);
-        userRepository.deleteUser(2L);
-        userRepository.deleteUser(3L);
-        userRepository.deleteUser(4L);
+        userService.deleteUser(0L);
+        userService.deleteUser(1L);
+        userService.deleteUser(2L);
+        userService.deleteUser(3L);
+        userService.deleteUser(4L);
 
-        List<User> users = userRepository.findAllUser();
+        List<User> users = userService.findAllUser();
         Assertions.assertEquals(0, users.size());
-        Assertions.assertNull(userRepository.findUser(1L));
-        Assertions.assertTrue(userRepository.findAllUser().isEmpty());
+        Assertions.assertNull(userService.findUser(1L));
+        Assertions.assertTrue(userService.findAllUser().isEmpty());
     }
 
 }

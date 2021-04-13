@@ -22,7 +22,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.jpol.vocabot.entity.User;
+import ru.jpol.vocabot.entity.Word;
 import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
+import ru.jpol.vocabot.service.restImpl.WordServiceImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +36,7 @@ import java.sql.SQLException;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = VocaBotApplicationTest.DockerPostgreDataSourceInitializer.class)
 @Testcontainers
-public abstract class VocaBotApplicationTest {
+public abstract class VocaBotApplicationTest implements Constants {
     private static final String changLogFile = "classpath:liquibase/db.changelog-master.xml";
 
     @Autowired
@@ -42,6 +44,9 @@ public abstract class VocaBotApplicationTest {
 
     @Autowired
     public UserServiceImpl userService;
+
+    @Autowired
+    public WordServiceImpl wordService;
 
     @Container
     public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:9.4");
@@ -74,17 +79,18 @@ public abstract class VocaBotApplicationTest {
         liquibase.close();
     }
 
-    protected void cleanUp(String ...tableName) {
+    protected void cleanUp(String... tableName) {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
     }
 
     /**
      * Create and save to db 5 users
      */
-    protected void config() {
+    protected void config_01() {
         User user;
-        for (long i = 0; i < 5; i++) {
+        for (long i = 0; i < defaultListSize; i++) {
             user = new User();
+
             user.setId(i);
             user.setEmail("test" + i + "@test.com");
             user.setFirstname("firstname" + i);
@@ -92,7 +98,15 @@ public abstract class VocaBotApplicationTest {
 
             userService.createUser(user);
         }
-
-
     }
+
+//    /**
+//     * Create and save to db 5 words with the same chatID
+//     */
+//    protected void config_02() {
+//        for (long i = 0; i < defaultListSize; i++) {
+//            wordService.createWord(new Word(defaultChatID, "word" + i, "translation" + i));
+//        }
+//    }
 }
+
