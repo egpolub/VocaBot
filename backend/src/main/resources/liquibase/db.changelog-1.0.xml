@@ -149,4 +149,44 @@
             <column name="name" value="ROLE_ADMIN"/>
         </insert>
     </changeSet>
+
+    <changeSet id="1.0.7" author="egpolub">
+
+        <insert tableName="users">
+            <column name="id" value="337616608"/>
+            <column name="firstname" value="jpol"/>
+            <column name="username" value="jpol"/>
+            <column name="email" value="jpol@gmail.com"/>
+        </insert>
+
+        <insert tableName="word">
+            <column name="chat_id" value="337616608"/>
+            <column name="word" value="word1"/>
+            <column name="translation" value="translation1"/>
+        </insert>
+
+        <insert tableName="word">
+            <column name="chat_id" value="337616608"/>
+            <column name="word" value="word2"/>
+            <column name="translation" value="translation2"/>
+        </insert>
+
+        <insert tableName="word">
+            <column name="chat_id" value="337616608"/>
+            <column name="word" value="word3"/>
+            <column name="translation" value="translation3"/>
+        </insert>
+
+        <insert tableName="word">
+            <column name="chat_id" value="337616608"/>
+            <column name="word" value="word4"/>
+            <column name="translation" value="translation4"/>
+        </insert>
+
+        <insert tableName="word">
+            <column name="chat_id" value="337616608"/>
+            <column name="word" value="word5"/>
+            <column name="translation" value="translation5"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
