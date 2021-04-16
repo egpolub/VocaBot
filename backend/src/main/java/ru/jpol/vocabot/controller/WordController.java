@@ -1,6 +1,7 @@
 package ru.jpol.vocabot.controller;
 
 import io.tej.SwaggerCodgen.api.WordApi;
+import io.tej.SwaggerCodgen.api.WordsApi;
 import io.tej.SwaggerCodgen.model.InlineResponse201;
 import io.tej.SwaggerCodgen.model.UserInfo;
 import io.tej.SwaggerCodgen.model.WordInfo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.entity.Word;
 import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
@@ -19,11 +21,12 @@ import ru.jpol.vocabot.service.restImpl.WordServiceImpl;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
-public class WordController implements WordApi {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+public class WordController implements WordApi, WordsApi {
+    private static final Logger logger = LoggerFactory.getLogger(WordController.class);
 
     private final WordServiceImpl wordService;
     private final UserServiceImpl userService;
@@ -32,6 +35,22 @@ public class WordController implements WordApi {
     public WordController(WordServiceImpl wordService, UserServiceImpl userService) {
         this.wordService = wordService;
         this.userService = userService;
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteAllWordsByChatId(Long chatId) {
+        logger.info(String.format("Request deleteAllWordsByChatId() with chatId = %d", chatId));
+
+        if (userService.findUser(chatId) == null)
+        {
+            String message = String.format("User with id = %d not found", chatId);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
+        }
+
+        wordService.deleteAllWord(chatId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -62,11 +81,6 @@ public class WordController implements WordApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteAllWordsByChatId(Long chatId) {
-        return null;
-    }
-
-    @Override
     public ResponseEntity<Void> deleteWordById(Long id) {
         return null;
     }
@@ -94,5 +108,10 @@ public class WordController implements WordApi {
     @Override
     public ResponseEntity<UserInfo> updateWordByChatId(Long chatId, UserInfo userInfo) {
         return null;
+    }
+
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return Optional.empty();
     }
 }

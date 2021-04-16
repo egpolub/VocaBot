@@ -50,4 +50,10 @@ public class WordServiceImpl implements WordService {
         wordRepository.deleteById(id);
         logger.info("Word by id = {} deleted", id);
     }
+
+    @Override
+    public void deleteAllWord(Long chatId) {
+        wordRepository.deleteWordByChatId(chatId);
+        logger.info("All words by chat id = {} deleted", chatId);
+    }
 }

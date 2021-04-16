@@ -19,4 +19,6 @@ public interface WordService {
     void updateWord(Word word);
 
     void deleteWord(Long id);
+
+    void deleteAllWord(Long chatId);
 }

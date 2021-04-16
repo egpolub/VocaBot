@@ -11,4 +11,7 @@ import java.util.List;
 public interface WordRepository extends JpaRepository<Word, Long> {
     List<Word> findByChatId(Long chatId);
 
+    @Transactional
+    void deleteWordByChatId(Long chatId);
+
 }
