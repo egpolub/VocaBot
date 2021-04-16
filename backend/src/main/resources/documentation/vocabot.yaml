@@ -147,6 +147,8 @@ paths:
                     description: The word ID. Created after adding to the system
         "400":
           description: Bad Request.
+        "409":
+            description: Conflict.
 
   /word/{chatId}:
     get:
@@ -195,14 +197,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserInfo'
+              $ref: '#/components/schemas/WordInfo'
       responses:
         "200":
           description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserInfo"
         "404":
           description: Not Found.
     delete:

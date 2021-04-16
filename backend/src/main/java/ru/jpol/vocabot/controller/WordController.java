@@ -3,7 +3,6 @@ package ru.jpol.vocabot.controller;
 import io.tej.SwaggerCodgen.api.WordApi;
 import io.tej.SwaggerCodgen.api.WordsApi;
 import io.tej.SwaggerCodgen.model.InlineResponse201;
-import io.tej.SwaggerCodgen.model.UserInfo;
 import io.tej.SwaggerCodgen.model.WordInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class WordController implements WordApi, WordsApi {
         {
             String message = String.format("User with id = %d not found", chatId);
             logger.error(message);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
         wordService.deleteAllWord(chatId);
@@ -60,13 +59,16 @@ public class WordController implements WordApi, WordsApi {
         Long chatId = wordInfo.getChatId();
         String word = wordInfo.getWord(), translation = wordInfo.getTranslation();
         if (chatId == null || word == null || translation == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
-                    "Chat ID = %d, word = %s, translation = %s must be not null", chatId, word, translation));
+            String message = String.format(
+                    "Chat ID = %d, word = %s, translation = %s must be not null", chatId, word, translation);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
 
         if (userService.findUser(chatId) == null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(
-                    "User by chat ID = %d not found", chatId));
+            String message = String.format("User by chat ID = %d not found", chatId);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
         }
 
         Word daoWord = new Word();
@@ -87,7 +89,7 @@ public class WordController implements WordApi, WordsApi {
         if (wordService.findById(id) == null) {
             String message = String.format("Word with id = %d not found", id);
             logger.error(message);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
         wordService.deleteWord(id);
@@ -117,8 +119,33 @@ public class WordController implements WordApi, WordsApi {
     }
 
     @Override
-    public ResponseEntity<UserInfo> updateWordById(Long id, UserInfo userInfo) {
-        return null;
+    public ResponseEntity<Void> updateWordById(Long id, WordInfo wordInfo) {
+        logger.info(String.format("Request updateWordById() with id = %d, word_id = %d",
+                id, wordInfo.getId()));
+
+        if (!id.equals(wordInfo.getId())) {
+            String message = "Word id in the path and in the request body should be the same";
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+        }
+
+        if (userService.findUser(wordInfo.getChatId()) == null) {
+            String message = String.format("User by chat ID = %d not found", wordInfo.getChatId());
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
+        }
+        Word word = wordService.findById(id);
+        if (word == null) {
+            String message = String.format("Word with id = %d not found", id);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
+        }
+
+        BeanUtils.copyProperties(wordInfo, word);
+
+        wordService.updateWord(word);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
