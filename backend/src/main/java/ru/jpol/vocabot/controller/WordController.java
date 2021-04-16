@@ -117,7 +117,7 @@ public class WordController implements WordApi, WordsApi {
     }
 
     @Override
-    public ResponseEntity<UserInfo> updateWordByChatId(Long chatId, UserInfo userInfo) {
+    public ResponseEntity<UserInfo> updateWordById(Long id, UserInfo userInfo) {
         return null;
     }
 

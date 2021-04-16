@@ -179,8 +179,8 @@ paths:
     patch:
       tags:
         - "word"
-      description: "Update word by chatId"
-      operationId: "Update word by chatId"
+      description: "Update word by id"
+      operationId: "Update word by id"
       parameters:
         - name: id
           in: path
