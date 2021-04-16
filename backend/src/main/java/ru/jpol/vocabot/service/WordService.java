@@ -21,4 +21,6 @@ public interface WordService {
     void deleteWord(Long id);
 
     void deleteAllWord(Long chatId);
+
+    Word findById(Long id);
 }

@@ -82,7 +82,18 @@ public class WordController implements WordApi, WordsApi {
 
     @Override
     public ResponseEntity<Void> deleteWordById(Long id) {
-        return null;
+        logger.info(String.format("Request deleteWordById() with id = %d", id));
+
+        if (wordService.findById(id) == null) {
+            String message = String.format("Word with id = %d not found", id);
+            logger.error(message);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
+        }
+
+        wordService.deleteWord(id);
+
+        return ResponseEntity.noContent().build();
+
     }
 
     @Override

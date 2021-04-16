@@ -9,6 +9,7 @@ import ru.jpol.vocabot.repository.WordRepository;
 import ru.jpol.vocabot.service.WordService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class WordServiceImpl implements WordService {
@@ -55,5 +56,17 @@ public class WordServiceImpl implements WordService {
     public void deleteAllWord(Long chatId) {
         wordRepository.deleteWordByChatId(chatId);
         logger.info("All words by chat id = {} deleted", chatId);
+    }
+
+    @Override
+    public Word findById(Long id) {
+        Word word = null;
+        try {
+            word = wordRepository.findById(id).orElseThrow();
+            logger.info("Found word by id: {}", word.getId());
+        } catch (NoSuchElementException e) {
+            logger.warn("Could not find word by id: {}", id);
+        }
+        return word;
     }
 }
