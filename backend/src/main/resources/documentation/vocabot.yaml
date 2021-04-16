@@ -3,6 +3,11 @@ info:
   description: "VocaBot REST API"
   version: "1.0.0"
   title: "VocaBot"
+tags:
+  - name: user
+    description: Operations about user
+  - name: word
+    description: Operations about word
 
 
 
@@ -199,25 +204,6 @@ paths:
         "404":
           description: Not Found.
 
-    delete:
-      tags:
-        - "word"
-      description: "Delete all words by chatId"
-      operationId: "Delete all words by chatId"
-      parameters:
-        - name: chatId
-          in: path
-          description: ID of the user
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "204":
-          description: No Content.
-        "404":
-          description: Not Found.
-
   /word/{id}:
     delete:
       tags:
@@ -228,6 +214,26 @@ paths:
         - name: id
           in: path
           description: The word ID. Created after adding to the system
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
+  /words/{chatId}:
+    delete:
+      tags:
+        - "word"
+      description: "Delete all words by chatId"
+      operationId: "Delete all words by chatId"
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of the user
           required: true
           schema:
             type: integer
