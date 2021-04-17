@@ -1,0 +1,305 @@
+openapi: "3.0.0"
+info:
+  description: "VocaBot REST API"
+  version: "1.0.0"
+  title: "VocaBot"
+tags:
+  - name: user
+    description: Operations about user
+  - name: word
+    description: Operations about word
+
+
+
+paths:
+  /user:
+    get:
+      tags:
+        - "user"
+      description: "Get list of users"
+      operationId: "getListUsers"
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserInfo"
+        "403":
+          description: Forbidden.
+        "404":
+          description: Not Found.
+
+    post:
+      tags:
+        - "user"
+      description: "Create user"
+      operationId: "Create user"
+      requestBody:
+        description: Information about User
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        "201":
+          description: Created.
+        "400":
+          description: Bad Request.
+
+  /user/{id}:
+    get:
+      tags:
+        - "user"
+      description: "Get user by id"
+      operationId: "Get user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        "404":
+          description: Not Found.
+
+    patch:
+      tags:
+        - "user"
+      description: "Update user by id"
+      operationId: "Update user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Information about User
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        "200":
+          description: Successful response.
+        "404":
+          description: Not Found.
+
+    delete:
+      tags:
+        - "user"
+      description: "Delete user by id"
+      operationId: "Delete user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
+
+  /word:
+    post:
+      tags:
+        - "word"
+      description: "Create word"
+      operationId: "Create word"
+      requestBody:
+        description: Information about Word
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordInfo'
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    description: The word ID. Created after adding to the system
+        "400":
+          description: Bad Request.
+        "409":
+            description: Conflict.
+
+  /word/{chatId}:
+    get:
+      tags:
+        - "word"
+      description: "Get list of words by chatId"
+      operationId: "Get list of words by chatId"
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WordInfo"
+        "204":
+          description: Not Content.
+
+
+  /word/{id}:
+    patch:
+      tags:
+        - "word"
+      description: "Update word by id"
+      operationId: "Update word by id"
+      parameters:
+        - name: id
+          in: path
+          description: The word ID. Created after adding to the system
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Information about Word
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordInfo'
+      responses:
+        "200":
+          description: Successful response.
+        "404":
+          description: Not Found.
+    delete:
+      tags:
+        - "word"
+      description: "Delete word by id"
+      operationId: "Delete word by id"
+      parameters:
+        - name: id
+          in: path
+          description: The word ID. Created after adding to the system
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
+  /words/{chatId}:
+    delete:
+      tags:
+        - "word"
+      description: "Delete all words by chatId"
+      operationId: "Delete all words by chatId"
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
+components:
+  schemas:
+    UserInfo:
+      description: Information about User
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The user ID.
+        firstname:
+          type: string
+          description: The user firstname.
+        username:
+          type: string
+          description: The user name.
+        email:
+          type: string
+          format: email
+          description: The user email.
+        created:
+          type: string
+          format: date-time
+          description: The user created.
+        updated:
+          type: string
+          format: date-time
+          description: The user last updated.
+
+    WordInfo:
+      description: Information about Word
+      type: object
+      required:
+        - chatId
+        - word
+        - translation
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The word ID. Created after adding to the system
+        chatId:
+          type: integer
+          format: int64
+          description: The user ID.
+        word:
+          type: string
+          description: The word.
+        translation:
+          type: string
+          description: The translation of a word.
+        created:
+          type: string
+          format: date-time
+          description: The word created.
+        updated:
+          type: string
+          format: date-time
+          description: The word last updated.
