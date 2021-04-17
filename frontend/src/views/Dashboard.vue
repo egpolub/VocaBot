@@ -14,6 +14,7 @@
             @pinned="pinItem(element.item, $event)"
             v-bind:dragAnim="dragAnim"
             v-bind:username="user.username"
+            v-bind:id="user.id"
             v-bind:photo_url="user.photo_url"
             v-if="element.item == 'Draggables'"
           />
@@ -52,7 +53,8 @@ export default {
       user: {
         username: 'User',
         photo_url:
-          'https://api-private.atlassian.com/users/756e85b64322972fbe6f40fa056ae878/avatar'
+          'https://api-private.atlassian.com/users/756e85b64322972fbe6f40fa056ae878/avatar',
+        id: 337616608
       }
     }
   },

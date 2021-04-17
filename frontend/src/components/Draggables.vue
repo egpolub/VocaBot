@@ -29,18 +29,9 @@
               (dragAnim && element.fixed) ||
               (dragAnim2[index] && element.fixed),
           }"
+          v-bind:id="id"
           v-bind:pinned_class="element.fixed"
           v-else-if="element.item == 'AddWords'"
-        />
-        <Block
-          @pinned="pinItem(element.item)"
-          :class="{
-            shake:
-              (dragAnim && element.fixed) ||
-              (dragAnim2[index] && element.fixed),
-          }"
-          v-bind:pinned_class="element.fixed"
-          v-else-if="element.item == 'Block'"
         />
       </div>
     </transition-group>
@@ -51,14 +42,13 @@
 import draggable from 'vuedraggable'
 import HelloUser from '@/components/User.vue'
 import AddWords from '@/components/AddWords.vue'
-import Block from '@/components/Block.vue'
+
 export default {
-  props: ['username', 'photo_url', 'dragAnim'],
+  props: ['username', 'photo_url', 'dragAnim', 'id'],
   components: {
     draggable,
     HelloUser,
-    AddWords,
-    Block
+    AddWords
   },
   data () {
     return {
