@@ -14,6 +14,8 @@
 
     <properties>
         <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <testcontainers.version>1.15.1</testcontainers.version>
     </properties>
 
@@ -187,14 +189,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>11</release>
                 </configuration>
             </plugin>
         </plugins>
