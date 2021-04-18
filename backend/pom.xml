@@ -13,7 +13,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+<!--        <java.version>11</java.version>-->
         <testcontainers.version>1.15.1</testcontainers.version>
     </properties>
 
@@ -187,6 +187,14 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
                 </configuration>
             </plugin>
         </plugins>
