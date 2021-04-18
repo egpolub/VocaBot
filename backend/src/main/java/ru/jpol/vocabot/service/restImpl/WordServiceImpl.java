@@ -62,7 +62,7 @@ public class WordServiceImpl implements WordService {
     public Word findById(Long id) {
         Word word = null;
         try {
-            word = wordRepository.findById(id).orElseThrow();
+            word = wordRepository.findById(id).orElseThrow(NoSuchElementException::new);
             logger.info("Found word by id: {}", word.getId());
         } catch (NoSuchElementException e) {
             logger.warn("Could not find word by id: {}", id);

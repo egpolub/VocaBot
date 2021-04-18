@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService, RoleService {
     public User findUser(Long id) {
         User user = null;
         try {
-            user = userRepository.findById(id).orElseThrow();
+            user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
             logger.info("Found user: {} by id: {}", user.getUsername(), user.getId());
         } catch (NoSuchElementException e) {
             logger.warn("Could not find user by id: {}", id);
