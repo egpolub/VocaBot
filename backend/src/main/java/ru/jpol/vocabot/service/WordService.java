@@ -1,7 +1,6 @@
 package ru.jpol.vocabot.service;
 
 import ru.jpol.vocabot.entity.Word;
-import ru.jpol.vocabot.repository.WordRepository;
 
 import java.util.List;
 

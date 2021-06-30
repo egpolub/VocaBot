@@ -33,14 +33,26 @@ public class UserServiceImpl implements UserService, RoleService {
     }
 
     @Override
+    public User findUserByName(String userName) {
+        User user = userRepository.findByUsername(userName);
+        if (user == null) {
+            logger.warn("Could not find user by username: {}", userName);
+        }
+        else {
+            logger.info("Found user: {} by id: {}", user.getUsername(), user.getId());
+        }
+        return user;
+    }
+
+    @Override
     public Role findRole(String name) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
             logger.warn("Could not find role by name: {}", name);
-            return null;
         }
-        logger.info("Found role: {}", role.getName());
-
+        else {
+            logger.info("Found role: {}", role.getName());
+        }
         return role;
     }
 
@@ -57,7 +69,7 @@ public class UserServiceImpl implements UserService, RoleService {
     public User findUser(Long id) {
         User user = null;
         try {
-            user = userRepository.findById(id).orElseThrow();
+            user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
             logger.info("Found user: {} by id: {}", user.getUsername(), user.getId());
         } catch (NoSuchElementException e) {
             logger.warn("Could not find user by id: {}", id);

@@ -14,6 +14,13 @@ public interface UserService {
      */
     User findUser(Long id);
 
+    /**
+     * Find user by userName
+     * @param userName
+     * @return null if not found user
+     */
+    User findUserByName(String userName);
+
     void createUser(User user);
 
     void deleteUser(Long id);
