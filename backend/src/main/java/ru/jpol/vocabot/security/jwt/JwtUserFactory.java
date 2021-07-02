@@ -12,7 +12,6 @@ public class JwtUserFactory {
     public static JwtUserDetails create(User user) {
         return new JwtUserDetails(
                 user.getId(),
-                null,
                 user.getFirstname(),
                 user.getUsername(),
                 user.getEmail(),

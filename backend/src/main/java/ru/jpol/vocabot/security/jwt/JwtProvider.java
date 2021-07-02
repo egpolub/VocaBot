@@ -36,18 +36,18 @@ public class JwtProvider {
      * @return
      */
     public Authentication getAuthentication(String token) {
-        UserDetails jwtUser = userDetailsService.loadUserByUsername(getUsernameFromToken(token));
+        UserDetails jwtUser = userDetailsService.loadUserById(getUserIdFromToken(token));
         return new UsernamePasswordAuthenticationToken(jwtUser, "", jwtUser.getAuthorities());
     }
 
     /**
      * Generate JSON Web Token
-     * @param username
+     * @param id - user ID
      * @param roles - The user roles
      * @return token
      */
-    public String generateToken(String username, List<Role> roles) {
-        Claims claims = Jwts.claims().setSubject(username);
+    public String generateToken(String id, List<Role> roles) {
+        Claims claims = Jwts.claims().setSubject(id);
         claims.put("roles", getRoleNames(roles));
 
         Date now = new Date();
@@ -107,14 +107,14 @@ public class JwtProvider {
     }
 
     /**
-     * Get username from token
+     * Get user ID from token
      * @param token - JSON Web Token
-     * @return username
+     * @return id
      */
-    public String getUsernameFromToken(String token) {
-        String username = Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(token).getBody().getSubject();
-        logger.info("From token get username={}", username);
-        return username;
+    public String getUserIdFromToken(String token) {
+        String id = Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(token).getBody().getSubject();
+        logger.info("From token get user id={}", id);
+        return id;
 
     }
 

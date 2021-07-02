@@ -7,16 +7,14 @@ import java.util.Collection;
 
 public class JwtUserDetails implements UserDetails {
     private final Long id;
-    private final String password;
     private final String firstName;
     private final String userName;
     private final String email;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(Long id, String password, String firstName, String userName, String email,
+    public JwtUserDetails(Long id, String firstName, String userName, String email,
                           Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.password = password;
         this.firstName = firstName;
         this.userName = userName;
         this.email = email;
@@ -57,5 +55,21 @@ public class JwtUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
