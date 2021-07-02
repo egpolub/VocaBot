@@ -17,10 +17,10 @@ import ru.jpol.vocabot.security.jwt.JwtProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADMIN_ENDPOINT = "/admin/**";
-    private static final String LOGIN_ENDPOINT = "/login";
+    private static final String LOGIN_ENDPOINT = "/auth/signup";
     private static final String HOME_ENDPOINT = "/";
 
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     @Autowired
     public SecurityConfig(JwtProvider jwtProvider) {

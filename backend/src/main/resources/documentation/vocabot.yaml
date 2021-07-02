@@ -4,10 +4,14 @@ info:
   version: "1.0.0"
   title: "VocaBot"
 tags:
+  - name: admin
+    description: Admin operations
   - name: user
-    description: Operations about user
+    description: User operations
   - name: word
     description: Operations about word
+  - name: auth
+    description: Authentication (signin, signup, signout)
 
 
 
@@ -243,8 +247,47 @@ paths:
         "404":
           description: Not Found.
 
+  /auth/signup:
+    post:
+      tags:
+        - "auth"
+      description: "Register user"
+      operationId: "Register user"
+      requestBody:
+        description: Information about authenticatio
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthInfo'
+      responses:
+        "200":
+          description: Successful authentication
+
+
 components:
   schemas:
+    AuthInfo:
+      description: Information for user authentication
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The user ID.
+        authDate:
+          type: string
+          format: date-time
+          description: The authentication date.
+        firstname:
+          type: string
+          description: The user firstname.
+        username:
+          type: string
+          description: The user name.
+
     UserInfo:
       description: Information about User
       type: object
