@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ConfigurationProperties(value = "jwt")
-@PropertySource("classpath:jwt.properties")
+@PropertySource("classpath:token.properties")
 public class JwtSecurityConfig {
     private String secret;
     private long expiredTime;
