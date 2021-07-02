@@ -12,10 +12,10 @@ tags:
 
 
 paths:
-  /user:
+  /admin/user:
     get:
       tags:
-        - "user"
+        - "admin"
       description: "Get list of users"
       operationId: "getListUsers"
       responses:
@@ -32,6 +32,27 @@ paths:
         "404":
           description: Not Found.
 
+  /admin/user/{id}:
+    delete:
+      tags:
+        - "admin"
+      description: "Delete user by id"
+      operationId: "Delete user by id"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
+
+  /user:
     post:
       tags:
         - "user"
@@ -49,7 +70,6 @@ paths:
           description: Created.
         "400":
           description: Bad Request.
-
   /user/{id}:
     get:
       tags:
@@ -73,6 +93,7 @@ paths:
                 $ref: "#/components/schemas/UserInfo"
         "404":
           description: Not Found.
+
 
     patch:
       tags:
@@ -99,26 +120,6 @@ paths:
           description: Successful response.
         "404":
           description: Not Found.
-
-    delete:
-      tags:
-        - "user"
-      description: "Delete user by id"
-      operationId: "Delete user by id"
-      parameters:
-        - name: id
-          in: path
-          description: ID of the user
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "204":
-          description: No Content.
-        "404":
-          description: Not Found.
-
 
   /word:
     post:
@@ -148,7 +149,7 @@ paths:
         "400":
           description: Bad Request.
         "409":
-            description: Conflict.
+          description: Conflict.
 
   /word/{chatId}:
     get:

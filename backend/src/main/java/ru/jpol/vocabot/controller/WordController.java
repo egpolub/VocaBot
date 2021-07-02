@@ -10,10 +10,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.entity.Word;
+import ru.jpol.vocabot.security.jwt.JwtUserDetails;
 import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 import ru.jpol.vocabot.service.restImpl.WordServiceImpl;
 
@@ -39,6 +42,7 @@ public class WordController implements WordApi, WordsApi {
     @Override
     public ResponseEntity<Void> deleteAllWordsByChatId(Long chatId) {
         logger.info(String.format("Request deleteAllWordsByChatId() with chatId = %d", chatId));
+        checkCredentials(chatId);
 
         if (userService.findUser(chatId) == null)
         {
@@ -55,8 +59,11 @@ public class WordController implements WordApi, WordsApi {
     @Override
     public ResponseEntity<InlineResponse201> createWord(WordInfo wordInfo) {
         logger.info(String.format("Request createWord() with chatId = %d", wordInfo.getChatId()));
+        checkCredentials(wordInfo.getChatId());
 
         Long chatId = wordInfo.getChatId();
+
+
         String word = wordInfo.getWord(), translation = wordInfo.getTranslation();
         if (chatId == null || word == null || translation == null) {
             String message = String.format(
@@ -85,9 +92,9 @@ public class WordController implements WordApi, WordsApi {
     @Override
     public ResponseEntity<Void> deleteWordById(Long id) {
         logger.info(String.format("Request deleteWordById() with id = %d", id));
-
-        if (wordService.findById(id) == null) {
-            String message = String.format("Word with id = %d not found", id);
+        Long chatId = getChatIdFromPrincipal();
+        if (wordService.findByIdAndChatId(id, chatId) == null) {
+            String message = String.format("Word with id = %d and chatID = %d not found", id, chatId);
             logger.error(message);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
@@ -101,6 +108,7 @@ public class WordController implements WordApi, WordsApi {
     @Override
     public ResponseEntity<List<WordInfo>> getListOfWordsByChatId(Long chatId) {
         logger.info(String.format("Request getListOfWordsByChatId() with chatId = %d", chatId));
+        checkCredentials(chatId);
 
         List<Word> words = wordService.findAllWord(chatId);
         List<WordInfo> result = new ArrayList<>();
@@ -122,6 +130,7 @@ public class WordController implements WordApi, WordsApi {
     public ResponseEntity<Void> updateWordById(Long id, WordInfo wordInfo) {
         logger.info(String.format("Request updateWordById() with id = %d, word_id = %d",
                 id, wordInfo.getId()));
+        checkCredentials(wordInfo.getChatId());
 
         if (!id.equals(wordInfo.getId())) {
             String message = "Word id in the path and in the request body should be the same";
@@ -134,7 +143,7 @@ public class WordController implements WordApi, WordsApi {
             logger.error(message);
             throw new ResponseStatusException(HttpStatus.CONFLICT, message);
         }
-        Word word = wordService.findById(id);
+        Word word = wordService.findByIdAndChatId(id, wordInfo.getChatId());
         if (word == null) {
             String message = String.format("Word with id = %d not found", id);
             logger.error(message);
@@ -151,5 +160,28 @@ public class WordController implements WordApi, WordsApi {
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
+    }
+
+    private void checkCredentials(Long chatId) {
+        // TODO use filtering instead
+        // TODO review me!
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user");
+        }
+        JwtUserDetails jwtUser = (JwtUserDetails) auth.getPrincipal();
+        if (!chatId.equals(jwtUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    private Long getChatIdFromPrincipal() {
+        // TODO review me!
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user");
+        }
+        JwtUserDetails jwtUser = (JwtUserDetails) auth.getPrincipal();
+        return jwtUser.getId();
     }
 }

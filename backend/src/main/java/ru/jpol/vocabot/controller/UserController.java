@@ -15,8 +15,6 @@ import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class UserController implements UserApi{
@@ -57,42 +55,6 @@ public class UserController implements UserApi{
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-    @Override
-    public ResponseEntity<Void> deleteUserById(Long id) {
-        logger.info(String.format("Request deleteUserById() with id = %d", id));
-
-        if (userService.findUser(id) == null) {
-            String message = String.format("User with id = %d not found", id);
-            logger.error(message);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
-        }
-
-        userService.deleteUser(id);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    public ResponseEntity<List<UserInfo>> getListUsers() {
-        logger.info("Request getListUsers()");
-
-        List<User> users = userService.findAllUser();
-        List<UserInfo> resultUsers = new ArrayList<>();
-
-        users.forEach(user -> {
-            UserInfo userInfo = new UserInfo();
-            BeanUtils.copyProperties(user, userInfo, "created", "updated");
-            userInfo.setCreated(user.getCreated().toInstant().atOffset(ZoneOffset.UTC));
-            userInfo.setUpdated(user.getUpdated().toInstant().atOffset(ZoneOffset.UTC));
-            resultUsers.add(userInfo);
-        });
-
-        return resultUsers.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(resultUsers);
-    }
-
 
     @Override
     public ResponseEntity<UserInfo> getUserById(Long id) {
