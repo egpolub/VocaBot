@@ -1,12 +1,15 @@
 package ru.jpol.vocabot.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import ru.jpol.vocabot.security.jwt.JwtConfigurer;
+import ru.jpol.vocabot.security.jwt.JwtProvider;
 
 
 @Configuration
@@ -17,6 +20,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String HOME_ENDPOINT = "/";
 
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    public SecurityConfig(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,7 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(HOME_ENDPOINT).anonymous()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .apply(new JwtConfigurer(jwtProvider));
     }
 
     @Override

@@ -10,6 +10,15 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:jwt.properties")
 public class JwtSecurityConfig {
     private String secret;
+    private long expiredTime;
+
+    public long getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(long expiredTime) {
+        this.expiredTime = expiredTime;
+    }
 
     public String getSecret() {
         return secret;

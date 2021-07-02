@@ -1,19 +1,21 @@
-package ru.jpol.vocabot.security;
+package ru.jpol.vocabot.security.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     private JwtProvider jwtProvider;
 
-    public JwtConfigurer(JwtProvider jwtTokenProvider) {
-        this.jwtProvider = jwtTokenProvider;
+    public JwtConfigurer(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
     }
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        // TODO add filtering
+        JwtFilter jwtFilter = new JwtFilter(jwtProvider);
+        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
