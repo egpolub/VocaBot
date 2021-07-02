@@ -8,7 +8,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import ru.jpol.vocabot.security.jwt.JwtConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.jpol.vocabot.security.jwt.JwtFilter;
 import ru.jpol.vocabot.security.jwt.JwtProvider;
 
 
@@ -29,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        JwtFilter jwtFilter = new JwtFilter(jwtProvider);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -38,9 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(HOME_ENDPOINT).anonymous()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .apply(new JwtConfigurer(jwtProvider));
+                .anyRequest().authenticated();
     }
 
     @Override

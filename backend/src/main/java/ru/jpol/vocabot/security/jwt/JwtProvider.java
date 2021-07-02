@@ -69,22 +69,10 @@ public class JwtProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(token);
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         }
-        catch (ExpiredJwtException e) {
-            logger.warn("JWT is accepted after it expires", e);
-        }
-        catch (UnsupportedJwtException e) {
-            logger.warn("JWT does not match the format expected by the application", e);
-        }
-        catch (MalformedJwtException e) {
-            logger.warn("JWT is not correctly constructed", e);
-        }
-        catch (Exception e) {
-            logger.warn("Token is not validity", e);
+        catch (UnsupportedJwtException | MalformedJwtException e) {
+            logger.error(e.getMessage());
         }
         return false;
     }
