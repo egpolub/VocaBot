@@ -4,7 +4,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
 
-    <changeSet id="1.0.0" author="egpolub">
+    <changeSet id="1.0.0" author="egpolub" context="prod">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="users"/>
@@ -38,7 +38,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.1" author="egpolub">
+    <changeSet id="1.0.1" author="egpolub" context="prod">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="roles"/>
@@ -64,7 +64,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.2" author="egpolub">
+    <changeSet id="1.0.2" author="egpolub" context="prod">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="word"/>
@@ -98,7 +98,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.3" author="egpolub">
+    <changeSet id="1.0.3" author="egpolub" context="prod">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="user_roles"/>
@@ -114,7 +114,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.4" author="egpolub">
+    <changeSet id="1.0.4" author="egpolub" context="prod">
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="user_roles"
                                  constraintName="fk_user_roles_user"
@@ -124,7 +124,7 @@
                                  referencedTableName="users"/>
     </changeSet>
 
-    <changeSet id="1.0.5" author="egpolub">
+    <changeSet id="1.0.5" author="egpolub" context="prod">
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="user_roles"
                                  constraintName="fk_user_roles_roles"
@@ -134,7 +134,7 @@
                                  referencedTableName="roles"/>
     </changeSet>
 
-    <changeSet id="1.0.6" author="egpolub">
+    <changeSet id="1.0.6" author="egpolub" context="prod">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(*) FROM roles WHERE name='ROLE_USER' OR name='ROLE_ADMIN';
@@ -147,46 +147,6 @@
 
         <insert tableName="roles">
             <column name="name" value="ROLE_ADMIN"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="1.0.7" author="egpolub">
-
-        <insert tableName="users">
-            <column name="id" value="337616608"/>
-            <column name="firstname" value="jpol"/>
-            <column name="username" value="jpol"/>
-            <column name="email" value="jpol@gmail.com"/>
-        </insert>
-
-        <insert tableName="word">
-            <column name="chat_id" value="337616608"/>
-            <column name="word" value="word1"/>
-            <column name="translation" value="translation1"/>
-        </insert>
-
-        <insert tableName="word">
-            <column name="chat_id" value="337616608"/>
-            <column name="word" value="word2"/>
-            <column name="translation" value="translation2"/>
-        </insert>
-
-        <insert tableName="word">
-            <column name="chat_id" value="337616608"/>
-            <column name="word" value="word3"/>
-            <column name="translation" value="translation3"/>
-        </insert>
-
-        <insert tableName="word">
-            <column name="chat_id" value="337616608"/>
-            <column name="word" value="word4"/>
-            <column name="translation" value="translation4"/>
-        </insert>
-
-        <insert tableName="word">
-            <column name="chat_id" value="337616608"/>
-            <column name="word" value="word5"/>
-            <column name="translation" value="translation5"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

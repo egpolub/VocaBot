@@ -8,6 +8,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,13 +17,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.jpol.vocabot.entity.User;
-import ru.jpol.vocabot.entity.Word;
 import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 import ru.jpol.vocabot.service.restImpl.WordServiceImpl;
 
@@ -35,9 +36,12 @@ import java.sql.SQLException;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = VocaBotApplicationTest.DockerPostgreDataSourceInitializer.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource("classpath:liquibase.properties")
 @Testcontainers
 public abstract class VocaBotApplicationTest implements Constants {
-    private static final String changLogFile = "classpath:liquibase/db.changelog-master.xml";
+    private static String changeLogFile;
+    private static String liquibaseContext;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -59,6 +63,8 @@ public abstract class VocaBotApplicationTest implements Constants {
 
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
+            changeLogFile = applicationContext.getEnvironment().getProperty("liquibase.change-log");
+            liquibaseContext = applicationContext.getEnvironment().getProperty("liquibase.context");
 
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
                     applicationContext,
@@ -70,12 +76,12 @@ public abstract class VocaBotApplicationTest implements Constants {
     }
 
     @BeforeAll
-    public static void init() throws SQLException, LiquibaseException {
+    public void init() throws SQLException, LiquibaseException {
         Connection connection = DriverManager.getConnection(postgreDBContainer.getJdbcUrl(), postgreDBContainer.getUsername(), postgreDBContainer.getPassword());
         DatabaseConnection dbConnection = new JdbcConnection(connection);
 
-        Liquibase liquibase = new Liquibase(changLogFile, new ClassLoaderResourceAccessor(), dbConnection);
-        liquibase.update(new Contexts());
+        Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), dbConnection);
+        liquibase.update(new Contexts(liquibaseContext));
         liquibase.close();
     }
 
