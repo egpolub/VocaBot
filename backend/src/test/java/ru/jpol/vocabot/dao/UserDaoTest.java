@@ -1,8 +1,9 @@
-package ru.jpol.vocabot;
+package ru.jpol.vocabot.dao;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.jpol.vocabot.VocaBotApplicationTest;
 import ru.jpol.vocabot.entity.Role;
 import ru.jpol.vocabot.entity.User;
 
