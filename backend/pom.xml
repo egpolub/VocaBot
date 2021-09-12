@@ -139,6 +139,14 @@
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>langdetect</groupId>
+            <artifactId>langdetect</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${basedir}/libs/langdetect.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
