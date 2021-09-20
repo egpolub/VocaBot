@@ -5,11 +5,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "roles")
-public class Role extends BaseEntity {
+public class Role{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer roleId;
 
     private String name;
 
@@ -24,12 +24,12 @@ public class Role extends BaseEntity {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public List<User> getUsers() {

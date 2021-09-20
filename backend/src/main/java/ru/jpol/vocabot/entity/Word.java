@@ -3,30 +3,34 @@ package ru.jpol.vocabot.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "words")
 public class Word extends BaseEntity {
     @Id
+    @Column(name = "word_id")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Integer wordId;
 
-    @Column(name = "chat_id")
-    private Long chatId;
+    @Column(name ="dictionary_id")
+    private Integer dictionaryId;
+    @Column(name = "word")
     private String word;
+    @Column(name = "translation")
     private String translation;
 
-    public Long getId() {
-        return id;
+    public Integer getWordId() {
+        return wordId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setWordId(Integer wordId) {
+        this.wordId = wordId;
     }
 
-    public Long getChatId() {
-        return chatId;
+    public Integer getDictionaryId() {
+        return dictionaryId;
     }
 
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
+    public void setDictionaryId(Integer dictionaryId) {
+        this.dictionaryId = dictionaryId;
     }
 
     public String getWord() {

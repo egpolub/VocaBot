@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity{
     @Id
-    private Long id;
+    private Long userId;
 
     @Column(name = "firstname")
     private String firstname;
@@ -20,16 +20,16 @@ public class User extends BaseEntity{
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName =  "id")},
-        inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+        joinColumns = {@JoinColumn(name = "user_id")},
+        inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private List<Role> roles;
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long id) {
+        this.userId = id;
     }
 
     public String getFirstname() {
