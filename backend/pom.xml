@@ -68,12 +68,13 @@
             <version>42.2.14</version>
         </dependency>
 
-        <!-- liquibase -->
+        <!-- flyway -->
         <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>4.2.2</version>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>7.15.0</version>
         </dependency>
+
 
         <!-- logging -->
         <dependency>
