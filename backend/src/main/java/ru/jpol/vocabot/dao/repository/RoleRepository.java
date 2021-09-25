@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.repository;
+package ru.jpol.vocabot.dao.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

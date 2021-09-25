@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.controller;
+package ru.jpol.vocabot.rest;
 
 import io.tej.SwaggerCodgen.api.AuthApi;
 import io.tej.SwaggerCodgen.model.AuthInfo;
@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.config.AdditionalSecurityConfig;
+import ru.jpol.vocabot.dao.restImpl.UserDao;
 import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.security.jwt.JwtProvider;
-import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 import ru.jpol.vocabot.utils.RestUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -21,15 +21,15 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-public class AuthController implements AuthApi {
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+public class AuthRestImpl implements AuthApi {
+    private static final Logger logger = LoggerFactory.getLogger(AuthRestImpl.class);
 
     private final JwtProvider jwtProvider;
-    private final UserServiceImpl userService;
+    private final UserDao userService;
     private final AdditionalSecurityConfig securityConfig;
 
     @Autowired
-    public AuthController(JwtProvider jwtProvider, UserServiceImpl userService, AdditionalSecurityConfig securityConfig) {
+    public AuthRestImpl(JwtProvider jwtProvider, UserDao userService, AdditionalSecurityConfig securityConfig) {
         this.jwtProvider = jwtProvider;
         this.userService = userService;
         this.securityConfig = securityConfig;
@@ -40,7 +40,7 @@ public class AuthController implements AuthApi {
         if (authInfo == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        if (authInfo.getId() == null) {
+        if (authInfo.getUserId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID in request body can not be null or empty");
         }
         if (authInfo.getHash() == null) {
@@ -59,18 +59,18 @@ public class AuthController implements AuthApi {
         }
 
         if (!authInfo.getHash().equals(hash)) {
-            logger.info("Forbidden telegram authentication for authInfo with id={}", authInfo.getId());
+            logger.info("Forbidden telegram authentication for authInfo with id={}", authInfo.getUserId());
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        if (userService.findUser(authInfo.getId()) != null) {
+        if (userService.findUser(authInfo.getUserId()) != null) {
             // TODO if user exists in the system?
         }
         User user = new User();
         BeanUtils.copyProperties(authInfo, user);
         userService.createUser(user);
 
-        String token = jwtProvider.generateToken(user.getId().toString(), user.getRoles());
+        String token = jwtProvider.generateToken(user.getUserId().toString(), user.getRoles());
 
         return ResponseEntity.ok().header("Authentication", "Bearer_" + token).build();
     }

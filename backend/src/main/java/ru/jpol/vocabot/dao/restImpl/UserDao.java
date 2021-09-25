@@ -1,15 +1,15 @@
-package ru.jpol.vocabot.service.restImpl;
+package ru.jpol.vocabot.dao.restImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.jpol.vocabot.dao.RoleService;
+import ru.jpol.vocabot.dao.UserService;
+import ru.jpol.vocabot.dao.repository.RoleRepository;
+import ru.jpol.vocabot.dao.repository.UserRepository;
 import ru.jpol.vocabot.entity.Role;
 import ru.jpol.vocabot.entity.User;
-import ru.jpol.vocabot.repository.RoleRepository;
-import ru.jpol.vocabot.repository.UserRepository;
-import ru.jpol.vocabot.service.RoleService;
-import ru.jpol.vocabot.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,8 @@ import java.util.NoSuchElementException;
 
 
 @Service
-public class UserServiceImpl implements UserService, RoleService {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+public class UserDao implements UserService, RoleService {
+    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
 
     private static final String roleUser = "ROLE_USER";
 
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, RoleService {
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserDao(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
@@ -36,10 +36,10 @@ public class UserServiceImpl implements UserService, RoleService {
     public User findUserByName(String userName) {
         User user = userRepository.findByUsername(userName);
         if (user == null) {
-            logger.warn("Could not find user by username: {}", userName);
+            logger.warn("Could not find user by username={}", userName);
         }
         else {
-            logger.info("Found user: {} by id: {}", user.getUsername(), user.getId());
+            logger.info("Found user with username={} by userId={}", user.getUsername(), user.getUserId());
         }
         return user;
     }
@@ -48,10 +48,10 @@ public class UserServiceImpl implements UserService, RoleService {
     public Role findRole(String name) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
-            logger.warn("Could not find role by name: {}", name);
+            logger.warn("Could not find role by name={}", name);
         }
         else {
-            logger.info("Found role: {}", role.getName());
+            logger.info("Found role={}", role.getName());
         }
         return role;
     }
@@ -60,19 +60,19 @@ public class UserServiceImpl implements UserService, RoleService {
     @Override
     public List<User> findAllUser() {
         List<User> users = userRepository.findAll();
-        logger.info("Found {} users", users.size());
+        logger.info("Found count={} users", users.size());
 
         return users;
     }
 
     @Override
-    public User findUser(Long id) {
+    public User findUser(Long userId) {
         User user = null;
         try {
-            user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
-            logger.info("Found user with username: {} by id: {}", user.getUsername(), user.getId());
+            user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+            logger.info("Found user with username={} by userId={}", user.getUsername(), user.getUserId());
         } catch (NoSuchElementException e) {
-            logger.warn("Could not find user by id: {}", id);
+            logger.warn("Could not find user by userId={}", userId);
         }
         return user;
     }
@@ -86,17 +86,17 @@ public class UserServiceImpl implements UserService, RoleService {
         user.setRoles(roles);
 
         userRepository.save(user);
-        logger.info("User with id: {} added", user.getId());
+        logger.info("User with userId={} added", user.getUserId());
     }
 
     @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-        logger.info("User by id: {} deleted", id);
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+        logger.info("User by id={} deleted", userId);
     }
 
     public void updateUser(User user) {
         userRepository.save(user);
-        logger.info("User by id: {} updated", user.getId());
+        logger.info("User by id={} updated", user.getUserId());
     }
 }

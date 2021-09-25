@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.controller;
+package ru.jpol.vocabot.rest;
 
 import io.tej.SwaggerCodgen.api.AdminApi;
 import io.tej.SwaggerCodgen.model.UserInfo;
@@ -10,26 +10,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import ru.jpol.vocabot.dao.restImpl.UserDao;
 import ru.jpol.vocabot.entity.User;
-import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
 
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class AdminController implements AdminApi {
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+public class AdminRestImpl implements AdminApi {
+    private static final Logger logger = LoggerFactory.getLogger(AdminRestImpl.class);
 
-    private final UserServiceImpl userService;
+    private final UserDao userService;
 
     @Autowired
-    public AdminController(UserServiceImpl userService) {
+    public AdminRestImpl(UserDao userService) {
         this.userService = userService;
     }
 
     @Override
-    public ResponseEntity<Void> deleteUserById(Long id) {
+    public ResponseEntity<Void> deleteUserByUserId(Long id) {
         logger.info(String.format("Request deleteUserById() with id = %d", id));
 
         if (userService.findUser(id) == null) {

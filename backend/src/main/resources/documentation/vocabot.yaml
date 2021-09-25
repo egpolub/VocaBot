@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "VocaBot REST API"
-  version: "1.0.0"
+  version: "1.0.1"
   title: "VocaBot"
 tags:
   - name: admin
@@ -36,14 +36,14 @@ paths:
         "404":
           description: Not Found.
 
-  /admin/user/{id}:
+  /admin/user/{userId}:
     delete:
       tags:
         - "admin"
-      description: "Delete user by id"
-      operationId: "Delete user by id"
+      description: "Delete user by userId"
+      operationId: "Delete user by userId"
       parameters:
-        - name: id
+        - name: userId
           in: path
           description: ID of the user
           required: true
@@ -74,14 +74,14 @@ paths:
           description: Created.
         "400":
           description: Bad Request.
-  /user/{id}:
+  /user/{userId}:
     get:
       tags:
         - "user"
-      description: "Get user by id"
-      operationId: "Get user by id"
+      description: "Get user by userId"
+      operationId: "Get user by userId"
       parameters:
-        - name: id
+        - name: userId
           in: path
           description: ID of the user
           required: true
@@ -102,10 +102,10 @@ paths:
     patch:
       tags:
         - "user"
-      description: "Update user by id"
-      operationId: "Update user by id"
+      description: "Update user by userId"
+      operationId: "Update user by userId"
       parameters:
-        - name: id
+        - name: userId
           in: path
           description: ID of the user
           required: true
@@ -146,29 +146,30 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  wordId:
                     type: integer
-                    format: int64
+                    format: int32
                     description: The word ID. Created after adding to the system
         "400":
           description: Bad Request.
         "409":
           description: Conflict.
 
-  /word/{chatId}:
+
+  /words/{dictionaryId}:
     get:
       tags:
         - "word"
-      description: "Get list of words by chatId"
-      operationId: "Get list of words by chatId"
+      description: "Get list words by dictionaryId"
+      operationId: "Get list words by dictionaryId"
       parameters:
-        - name: chatId
+        - name: dictionaryId
           in: path
-          description: ID of the user
+          description: ID of the dictionary
           required: true
           schema:
             type: integer
-            format: int64
+            format: int32
       responses:
         "200":
           description: Successful response.
@@ -181,21 +182,46 @@ paths:
         "204":
           description: Not Content.
 
+    delete:
+      tags:
+        - "word"
+      description: "Delete all words by dictionaryId"
+      operationId: "Delete all words by dictionaryId"
+      parameters:
+        - name: dictionaryId
+          in: path
+          description: ID of the dictionary.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "204":
+          description: No Content.
+        "404":
+          description: Not Found.
 
-  /word/{id}:
+  /word/{dictionaryId}:
     patch:
       tags:
         - "word"
-      description: "Update word by id"
-      operationId: "Update word by id"
+      description: "Update word by wordId"
+      operationId: "Update word by wordId"
       parameters:
-        - name: id
+        - name: dictionaryId
           in: path
+          description: ID of the dictionary
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: wordId
+          in: query
           description: The word ID. Created after adding to the system
           required: true
           schema:
             type: integer
-            format: int64
+            format: int32
       requestBody:
         description: Information about Word
         required: true
@@ -208,44 +234,33 @@ paths:
           description: Successful response.
         "404":
           description: Not Found.
+
     delete:
       tags:
         - "word"
-      description: "Delete word by id"
-      operationId: "Delete word by id"
+      description: "Delete word by wordId"
+      operationId: "Delete word by wordId"
       parameters:
-        - name: id
+        - name: dictionaryId
           in: path
+          description: ID of the dictionary
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: wordId
+          in: query
           description: The word ID. Created after adding to the system
           required: true
           schema:
             type: integer
-            format: int64
+            format: int32
       responses:
         "204":
           description: No Content.
         "404":
           description: Not Found.
 
-  /words/{chatId}:
-    delete:
-      tags:
-        - "word"
-      description: "Delete all words by chatId"
-      operationId: "Delete all words by chatId"
-      parameters:
-        - name: chatId
-          in: path
-          description: ID of the user
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "204":
-          description: No Content.
-        "404":
-          description: Not Found.
 
   /auth/signup:
     post:
@@ -271,13 +286,13 @@ components:
       description: Information for user authentication
       type: object
       required:
-        - id
+        - userId
         - authDate
         - firstname
         - username
         - hash
       properties:
-        id:
+        userId:
           type: integer
           format: int64
           description: The user ID.
@@ -299,9 +314,9 @@ components:
       description: Information about User
       type: object
       required:
-        - id
+        - userId
       properties:
-        id:
+        userId:
           type: integer
           format: int64
           description: The user ID.
@@ -328,17 +343,17 @@ components:
       description: Information about Word
       type: object
       required:
-        - chatId
+        - dictionaryId
         - word
         - translation
       properties:
-        id:
+        wordId:
           type: integer
-          format: int64
+          format: int32
           description: The word ID. Created after adding to the system
-        chatId:
+        dictionaryId:
           type: integer
-          format: int64
+          format: int32
           description: The user ID.
         word:
           type: string

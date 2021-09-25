@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.service;
+package ru.jpol.vocabot.dao;
 
 import ru.jpol.vocabot.entity.Role;
 
