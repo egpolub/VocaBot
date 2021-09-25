@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
-import ru.jpol.vocabot.dao.restImpl.WordDao;
+import ru.jpol.vocabot.dao.DaoImpl.WordDaoImpl;
 import ru.jpol.vocabot.entity.Word;
 import ru.jpol.vocabot.security.jwt.JwtUserDetails;
 
@@ -29,10 +29,10 @@ import java.util.Optional;
 public class WordRestImpl implements WordApi, WordsApi {
     private static final Logger logger = LoggerFactory.getLogger(WordRestImpl.class);
 
-    private final WordDao wordService;
+    private final WordDaoImpl wordService;
 
     @Autowired
-    public WordRestImpl(WordDao wordService) {
+    public WordRestImpl(WordDaoImpl wordService) {
         this.wordService = wordService;
     }
 

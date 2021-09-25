@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.dao.restImpl;
+package ru.jpol.vocabot.dao.DaoImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +17,8 @@ import java.util.NoSuchElementException;
 
 
 @Service
-public class UserDao implements UserService, RoleService {
-    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
+public class UserDaoImpl implements UserService, RoleService {
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private static final String roleUser = "ROLE_USER";
 
@@ -27,7 +27,7 @@ public class UserDao implements UserService, RoleService {
 
 
     @Autowired
-    public UserDao(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserDaoImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }

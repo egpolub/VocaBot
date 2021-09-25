@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.config.AdditionalSecurityConfig;
-import ru.jpol.vocabot.dao.restImpl.UserDao;
+import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.security.jwt.JwtProvider;
 import ru.jpol.vocabot.utils.RestUtils;
@@ -25,11 +25,11 @@ public class AuthRestImpl implements AuthApi {
     private static final Logger logger = LoggerFactory.getLogger(AuthRestImpl.class);
 
     private final JwtProvider jwtProvider;
-    private final UserDao userService;
+    private final UserDaoImpl userService;
     private final AdditionalSecurityConfig securityConfig;
 
     @Autowired
-    public AuthRestImpl(JwtProvider jwtProvider, UserDao userService, AdditionalSecurityConfig securityConfig) {
+    public AuthRestImpl(JwtProvider jwtProvider, UserDaoImpl userService, AdditionalSecurityConfig securityConfig) {
         this.jwtProvider = jwtProvider;
         this.userService = userService;
         this.securityConfig = securityConfig;

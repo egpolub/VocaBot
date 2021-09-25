@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.jpol.vocabot.dao.restImpl.UserDao;
+import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.security.jwt.JwtUserDetails;
 import ru.jpol.vocabot.security.jwt.JwtUserFactory;
@@ -16,10 +16,10 @@ import ru.jpol.vocabot.security.jwt.JwtUserFactory;
 public class SecurityUserDetailsService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(SecurityUserDetailsService.class);
 
-    private final UserDao userDetails;
+    private final UserDaoImpl userDetails;
 
     @Autowired
-    public SecurityUserDetailsService(UserDao userDetails) {
+    public SecurityUserDetailsService(UserDaoImpl userDetails) {
         this.userDetails = userDetails;
     }
 

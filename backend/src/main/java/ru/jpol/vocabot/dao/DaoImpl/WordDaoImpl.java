@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.dao.restImpl;
+package ru.jpol.vocabot.dao.DaoImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +11,13 @@ import ru.jpol.vocabot.entity.Word;
 import java.util.List;
 
 @Service
-public class WordDao implements WordService {
-    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
+public class WordDaoImpl implements WordService {
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private final WordRepository wordRepository;
 
     @Autowired
-    public WordDao(WordRepository wordRepository) {
+    public WordDaoImpl(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
     }
 

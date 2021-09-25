@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import ru.jpol.vocabot.dao.restImpl.UserDao;
+import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
 
 import java.time.ZoneOffset;
@@ -20,10 +20,10 @@ import java.time.ZoneOffset;
 public class UserRestImpl implements UserApi{
     private static final Logger logger = LoggerFactory.getLogger(UserRestImpl.class);
 
-    private final UserDao userService;
+    private final UserDaoImpl userService;
 
     @Autowired
-    public UserRestImpl(UserDao userService) {
+    public UserRestImpl(UserDaoImpl userService) {
         this.userService = userService;
     }
 
