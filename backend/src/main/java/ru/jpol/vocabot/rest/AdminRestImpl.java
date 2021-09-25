@@ -29,16 +29,16 @@ public class AdminRestImpl implements AdminApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteUserByUserId(Long id) {
-        logger.info(String.format("Request deleteUserById() with id = %d", id));
+    public ResponseEntity<Void> deleteUserByUserId(Long userId) {
+        logger.info("Request deleteUserByUserId() with userId={}", userId);
 
-        if (userService.findUser(id) == null) {
-            String message = String.format("User with id = %d not found", id);
-            logger.error(message);
+        if (userService.findUser(userId) == null) {
+            String message = String.format("User with userId=%d not found", userId);
+            logger.warn(message);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
-        userService.deleteUser(id);
+        userService.deleteUser(userId);
 
         return ResponseEntity.noContent().build();
     }
@@ -49,7 +49,6 @@ public class AdminRestImpl implements AdminApi {
 
         List<User> users = userService.findAllUser();
         List<UserInfo> resultUsers = new ArrayList<>();
-
         users.forEach(user -> {
             UserInfo userInfo = new UserInfo();
             BeanUtils.copyProperties(user, userInfo, "created", "updated");
