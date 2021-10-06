@@ -19,10 +19,10 @@ public class UserRestTest extends VocaBotApplicationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @AfterEach
-    public void cleanByTableName() {
-        super.cleanUp("users");
-    }
+//    @AfterEach
+//    public void cleanByTableName() {
+//        super.cleanUp("users");
+//    }
 
     @Test
     public void testGetUser() throws Exception {

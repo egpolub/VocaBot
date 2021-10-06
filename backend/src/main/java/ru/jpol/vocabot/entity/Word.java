@@ -3,7 +3,7 @@ package ru.jpol.vocabot.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "words")
+@Table(name = "words", schema = "voca")
 public class Word extends BaseEntity {
     @Id
     @Column(name = "word_id")

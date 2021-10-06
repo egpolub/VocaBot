@@ -1,93 +1,92 @@
 package ru.jpol.vocabot;
 
 
-import liquibase.Contexts;
-import liquibase.Liquibase;
-import liquibase.database.DatabaseConnection;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
+import org.flywaydb.core.Flyway;
+import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
+import ru.jpol.vocabot.dao.DaoImpl.WordDaoImpl;
 import ru.jpol.vocabot.entity.User;
-import ru.jpol.vocabot.service.restImpl.UserServiceImpl;
-import ru.jpol.vocabot.service.restImpl.WordServiceImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@ExtendWith(SpringExtension.class)
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = VocaBotApplicationTest.DockerPostgreDataSourceInitializer.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestPropertySource("classpath:liquibase.properties")
 @Testcontainers
 public abstract class VocaBotApplicationTest implements Constants {
-    private static String changeLogFile;
-    private static String liquibaseContext;
+
+//    @Autowired
+//    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private Flyway flyway;
 
     @Autowired
-    public UserServiceImpl userService;
+    public UserDaoImpl userDao;
 
     @Autowired
-    public WordServiceImpl wordService;
+    public WordDaoImpl wordDao;
 
-    @Container
-    public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:9.4");
+    @ClassRule
+    public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:11-alpine");
 
     static {
+//        postgreDBContainer.withInitScript("src/test/resources/db/migration/V1.1.0__init_postgres.sql");
         postgreDBContainer.start();
     }
 
     public static class DockerPostgreDataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(ConfigurableApplicationContext applicationContext) {
-            changeLogFile = applicationContext.getEnvironment().getProperty("liquibase.change-log");
-            liquibaseContext = applicationContext.getEnvironment().getProperty("liquibase.context");
-
-            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-                    applicationContext,
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
                     "spring.datasource.url=" + postgreDBContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgreDBContainer.getUsername(),
                     "spring.datasource.password=" + postgreDBContainer.getPassword()
-            );
+            ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
 
-    @BeforeAll
-    public void init() throws SQLException, LiquibaseException {
-        Connection connection = DriverManager.getConnection(postgreDBContainer.getJdbcUrl(), postgreDBContainer.getUsername(), postgreDBContainer.getPassword());
-        DatabaseConnection dbConnection = new JdbcConnection(connection);
-
-        Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), dbConnection);
-        liquibase.update(new Contexts(liquibaseContext));
-        liquibase.close();
+    @BeforeEach
+    public void init() {
+        System.out.println("You know that i am here");
+        System.out.println(Flyway.configure().getInitSql());
+        flyway.clean();
+        flyway.migrate();
     }
 
-    protected void cleanUp(String... tableName) {
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
-    }
+//    protected void cleanUp(String... tableName) {
+//        JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
+//    }
 
     /**
      * Create and save to db 5 users
@@ -97,12 +96,12 @@ public abstract class VocaBotApplicationTest implements Constants {
         for (long i = 0; i < defaultListSize; i++) {
             user = new User();
 
-            user.setId(i);
+            user.setUserId(i);
             user.setEmail("test" + i + "@test.com");
             user.setFirstname("firstname" + i);
             user.setUsername("username" + i);
 
-            userService.createUser(user);
+            userDao.createUser(user);
         }
     }
 
