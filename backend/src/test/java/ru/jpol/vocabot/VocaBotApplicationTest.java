@@ -1,57 +1,44 @@
 package ru.jpol.vocabot;
 
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 import org.junit.ClassRule;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.TestPropertySourceUtils;
-import org.springframework.test.jdbc.JdbcTestUtils;
+import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
 import ru.jpol.vocabot.dao.DaoImpl.WordDaoImpl;
+import ru.jpol.vocabot.dao.repository.UserRepository;
 import ru.jpol.vocabot.entity.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 
 
-//@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = VocaBotApplicationTest.DockerPostgreDataSourceInitializer.class)
-@Testcontainers
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource("classpath:flyway.properties")
 public abstract class VocaBotApplicationTest implements Constants {
+    private static String FLYWAY_LOCATIONS;
+    private static String FLYWAY_SCHEMAS;
 
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private Flyway flyway;
 
     @Autowired
-    public UserDaoImpl userDao;
+    public UserRepository userRepository;
 
     @Autowired
     public WordDaoImpl wordDao;
@@ -60,14 +47,18 @@ public abstract class VocaBotApplicationTest implements Constants {
     public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:11-alpine");
 
     static {
-//        postgreDBContainer.withInitScript("src/test/resources/db/migration/V1.1.0__init_postgres.sql");
         postgreDBContainer.start();
     }
 
     public static class DockerPostgreDataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
+
+
         @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            FLYWAY_LOCATIONS = configurableApplicationContext.getEnvironment().getProperty("spring.flyway.locations");
+            FLYWAY_SCHEMAS = configurableApplicationContext.getEnvironment().getProperty("spring.flyway.schemas");
+            
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgreDBContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgreDBContainer.getUsername(),
@@ -78,15 +69,15 @@ public abstract class VocaBotApplicationTest implements Constants {
 
     @BeforeEach
     public void init() {
-        System.out.println("You know that i am here");
-        System.out.println(Flyway.configure().getInitSql());
+        if (flyway == null) {
+            flyway = Flyway.configure()
+                    .dataSource(getDataSource(postgreDBContainer))
+                    .schemas(FLYWAY_SCHEMAS)
+                    .locations(FLYWAY_LOCATIONS).load();
+        }
         flyway.clean();
         flyway.migrate();
     }
-
-//    protected void cleanUp(String... tableName) {
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
-//    }
 
     /**
      * Create and save to db 5 users
@@ -101,7 +92,7 @@ public abstract class VocaBotApplicationTest implements Constants {
             user.setFirstname("firstname" + i);
             user.setUsername("username" + i);
 
-            userDao.createUser(user);
+            userRepository.save(user);
         }
     }
 
@@ -113,5 +104,14 @@ public abstract class VocaBotApplicationTest implements Constants {
 //            wordService.createWord(new Word(defaultChatID, "word" + i, "translation" + i));
 //        }
 //    }
+
+    private DataSource getDataSource(JdbcDatabaseContainer<?> container) {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(container.getJdbcUrl());
+        hikariConfig.setUsername(container.getUsername());
+        hikariConfig.setPassword(container.getPassword());
+        hikariConfig.setDriverClassName(container.getDriverClassName());
+        return new HikariDataSource(hikariConfig);
+    }
 }
 

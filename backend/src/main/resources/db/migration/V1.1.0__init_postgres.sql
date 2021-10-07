@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS voca.users
 CREATE TABLE IF NOT EXISTS voca.words
 (
     word_id SERIAL PRIMARY KEY,
-    dictionary_id INTEGER NOT NULL ,
+    dictionary_id INTEGER NOT NULL,
     word VARCHAR(255) NOT NULL,
     translation VARCHAR(255) NOT NULL,
     created TIMESTAMP without time zone NOT NULL DEFAULT now(),
