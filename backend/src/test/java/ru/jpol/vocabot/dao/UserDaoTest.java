@@ -1,101 +1,122 @@
-//package ru.jpol.vocabot.dao;
-//
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.Test;
-//import ru.jpol.vocabot.VocaBotApplicationTest;
-//import ru.jpol.vocabot.entity.Role;
-//import ru.jpol.vocabot.entity.User;
-//
-//import java.util.List;
-//
-//
-//public class UserDaoTest extends VocaBotApplicationTest {
-//
-//    @AfterEach
-//    public void cleanByTableName() {
-//        super.cleanUp("users");
-//    }
-//
-//    @Test
-//    public void testFindRole() {
-//        /*
-//          ROLE_USER, ROLE_ADMIN must exist in table Roles
-//         */
-//        Role userRole = userService.findRole("ROLE_USER");
-//        Role adminRole = userService.findRole("ROLE_ADMIN");
-//
-//        Assertions.assertNull(userService.findRole("ROLE_UNKNOWN"));
-//
-//        Assertions.assertEquals("ROLE_USER", userRole.getName());
-//        Assertions.assertEquals("ROLE_ADMIN", adminRole.getName());
-//
-//
-//        Assertions.assertTrue(userRole.getCreated().getTime() < System.currentTimeMillis());
-//        Assertions.assertTrue(adminRole.getCreated().getTime() < System.currentTimeMillis());
-//        Assertions.assertEquals(userRole.getCreated(), userRole.getUpdated());
-//        Assertions.assertEquals(adminRole.getCreated(), adminRole.getUpdated());
-//    }
-//
-//    @Test
-//    public void testFindUser() {
-//        config_01();
-//
-//        List<User> users = userService.findAllUser();
-//        Assertions.assertEquals(defaultListSize, users.size());
-//
-//        User testUser = new User();
-//        testUser.setId(0L);
-//        testUser.setUsername("username0");
-//        testUser.setFirstname("firstname0");
-//        testUser.setEmail("test0@test.com");
-//
-//        User createdUser = userService.findUser(testUser.getId());
-//        Assertions.assertEquals(testUser.getId(), createdUser.getId());
-//        Assertions.assertEquals(testUser.getUsername(), createdUser.getUsername());
-//        Assertions.assertEquals(testUser.getEmail(), createdUser.getEmail());
-//        Assertions.assertEquals(testUser.getFirstname(), createdUser.getFirstname());
-//        Assertions.assertTrue(createdUser.getCreated().getTime() < System.currentTimeMillis());
-//        Assertions.assertTrue(createdUser.getUpdated().getTime() < System.currentTimeMillis());
-//        Assertions.assertEquals(1, createdUser.getRoles().size());
-//        Assertions.assertEquals("ROLE_USER", createdUser.getRoles().get(0).getName());
-//    }
-//
-//    @Test
-//    public void testUpdateUser() {
-//        config_01();
-//
-//        User user = userService.findUser(0L);
-//        user.setEmail("updatedTest@test.com");
-//        userService.updateUser(user);
-//
-//        User updatedUser = userService.findUser(user.getId());
-//        Assertions.assertEquals(user.getId(), updatedUser.getId());
-//        Assertions.assertEquals(user.getUsername(), updatedUser.getUsername());
-//        Assertions.assertEquals(user.getEmail(), updatedUser.getEmail());
-//        Assertions.assertEquals(user.getFirstname(), updatedUser.getFirstname());
-//        Assertions.assertEquals(user.getCreated(), updatedUser.getCreated());
-//        Assertions.assertTrue(user.getUpdated().getTime() < updatedUser.getUpdated().getTime());
-//        Assertions.assertEquals(1, updatedUser.getRoles().size());
-//        Assertions.assertEquals("ROLE_USER", updatedUser.getRoles().get(0).getName());
-//    }
-//
-//    @Test
-//    public void testDeleteUser() {
-//        config_01();
-//
-//        Assertions.assertEquals(defaultListSize, userService.findAllUser().size());
-//
-//        userService.deleteUser(0L);
-//        userService.deleteUser(1L);
-//        userService.deleteUser(2L);
-//        userService.deleteUser(3L);
-//        userService.deleteUser(4L);
-//
-//        List<User> users = userService.findAllUser();
-//        Assertions.assertEquals(0, users.size());
-//        Assertions.assertNull(userService.findUser(1L));
-//        Assertions.assertTrue(userService.findAllUser().isEmpty());
-//    }
-//
-//}
+package ru.jpol.vocabot.dao;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import ru.jpol.vocabot.VocaBotApplicationTest;
+import ru.jpol.vocabot.entity.Role;
+import ru.jpol.vocabot.entity.User;
+
+import java.util.List;
+
+
+public class UserDaoTest extends VocaBotApplicationTest {
+
+    @Test
+    public void testFindRole() {
+        /*
+          ROLE_USER, ROLE_ADMIN must exist in table Roles
+         */
+        Role userRole = userDao.findRole("ROLE_USER");
+        Role adminRole = userDao.findRole("ROLE_ADMIN");
+
+        Assertions.assertNull(userDao.findRole("ROLE_UNKNOWN"));
+        Assertions.assertEquals("ROLE_USER", userRole.getName());
+        Assertions.assertEquals("ROLE_ADMIN", adminRole.getName());
+    }
+
+    @Test
+    public void testCreateUser() {
+        User user = new User();
+        user.setUserId(0L);
+        user.setUsername("test_username");
+        user.setFirstname("test_firstname");
+        user.setEmail("test@test.com");
+
+        userDao.createUser(user);
+
+        User createdUser = userDao.findUser(user.getUserId());
+        Assertions.assertNotNull(createdUser);
+        Assertions.assertEquals(user.getUserId(), createdUser.getUserId());
+        Assertions.assertEquals(user.getUsername(), createdUser.getUsername());
+        Assertions.assertEquals(user.getFirstname(), createdUser.getFirstname());
+        Assertions.assertEquals(user.getEmail(), createdUser.getEmail());
+        Assertions.assertNotNull(createdUser.getCreated());
+        Assertions.assertTrue(createdUser.getCreated().getTime() < System.currentTimeMillis());
+        // TODO created and updated timestamps should be the same
+        // Assertions.assertEquals(createdUser.getUpdated().getTime(), createdUser.getCreated().getTime());
+
+        Assertions.assertEquals(1, createdUser.getRoles().size());
+        Assertions.assertEquals("ROLE_USER", createdUser.getRoles().get(0).getName());
+
+        // try to add user with existent userId
+        User user2 = new User();
+        user2.setUserId(createdUser.getUserId());
+        user2.setUsername("test_username2");
+        user2.setFirstname("test_firstname2");
+        user2.setEmail("test2@test.com");
+
+        // TODO should be thrown exception
+//        userDao.createUser(user2);
+
+        // try to add user with existent email
+        User user3 = new User();
+        user3.setUserId(3L);
+        user3.setUsername("test_username3");
+        user3.setFirstname("test_firstname3");
+        user3.setEmail(user.getEmail());
+
+        // TODO should be thrown more friendly exception
+        Assertions.assertThrows(Exception.class,
+                () -> userDao.createUser(user3));
+
+        // user does not exist in the system
+        Long unknownUserId = 123456L;
+        Assertions.assertNull(userDao.findUser(unknownUserId));
+    }
+
+    @Test
+    public void testFindUser() {
+        config_01();
+
+        List<User> users = userDao.findAllUser();
+        Assertions.assertEquals(defaultListSize, users.size());
+
+        // find user by userName
+        Assertions.assertNotNull(userDao.findUserByName("username0"));
+
+        // user does not exist in the system
+        Assertions.assertNull(userDao.findUserByName("unknown username"));
+    }
+
+    @Test
+    public void testUpdateUser() {
+        config_01();
+
+        User user = userDao.findUser(0L);
+        Assertions.assertEquals("test0@test.com", user.getEmail());
+
+        user.setEmail("updatedTest@test.com");
+        userDao.updateUser(user);
+
+        User updatedUser = userDao.findUser(user.getUserId());
+        Assertions.assertEquals(user.getEmail(), updatedUser.getEmail());
+    }
+
+    @Test
+    public void testDeleteUser() {
+        config_01();
+
+        Assertions.assertEquals(defaultListSize, userDao.findAllUser().size());
+
+        userDao.deleteUser(0L);
+        userDao.deleteUser(1L);
+        userDao.deleteUser(2L);
+        userDao.deleteUser(3L);
+        userDao.deleteUser(4L);
+
+        List<User> users = userDao.findAllUser();
+        Assertions.assertEquals(0, users.size());
+        Assertions.assertNull(userDao.findUser(1L));
+        Assertions.assertTrue(userDao.findAllUser().isEmpty());
+    }
+}

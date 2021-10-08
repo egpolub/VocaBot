@@ -1,4 +1,4 @@
-package ru.jpol.vocabot.dao.DaoImpl;
+package ru.jpol.vocabot.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,17 +86,18 @@ public class UserDaoImpl implements UserService, RoleService {
         user.setRoles(roles);
 
         userRepository.save(user);
-        logger.info("User with userId={} added", user.getUserId());
+        logger.info("Added user with userId={}", user.getUserId());
     }
 
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-        logger.info("User by id={} deleted", userId);
+        logger.info("Deleted user by userId={}", userId);
     }
 
+    @Override
     public void updateUser(User user) {
         userRepository.save(user);
-        logger.info("User by id={} updated", user.getUserId());
+        logger.info("Updated user by userId={}", user.getUserId());
     }
 }

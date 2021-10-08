@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
-import ru.jpol.vocabot.dao.DaoImpl.WordDaoImpl;
+import ru.jpol.vocabot.dao.impl.WordDaoImpl;
 import ru.jpol.vocabot.entity.Word;
 import ru.jpol.vocabot.security.jwt.JwtUserDetails;
 

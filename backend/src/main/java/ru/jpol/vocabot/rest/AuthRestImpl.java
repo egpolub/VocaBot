@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.config.AdditionalSecurityConfig;
-import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
+import ru.jpol.vocabot.dao.impl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.security.jwt.JwtProvider;
 import ru.jpol.vocabot.utils.RestUtils;

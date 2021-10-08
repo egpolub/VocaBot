@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import ru.jpol.vocabot.dao.DaoImpl.UserDaoImpl;
+import ru.jpol.vocabot.dao.impl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
 
 import java.time.ZoneOffset;

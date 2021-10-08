@@ -18,8 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.jpol.vocabot.dao.DaoImpl.WordDaoImpl;
-import ru.jpol.vocabot.dao.repository.UserRepository;
+import ru.jpol.vocabot.dao.impl.UserDaoImpl;
+import ru.jpol.vocabot.dao.impl.WordDaoImpl;
 import ru.jpol.vocabot.entity.User;
 
 import javax.sql.DataSource;
@@ -38,7 +38,7 @@ public abstract class VocaBotApplicationTest implements Constants {
     private Flyway flyway;
 
     @Autowired
-    public UserRepository userRepository;
+    public UserDaoImpl userDao;
 
     @Autowired
     public WordDaoImpl wordDao;
@@ -92,7 +92,7 @@ public abstract class VocaBotApplicationTest implements Constants {
             user.setFirstname("firstname" + i);
             user.setUsername("username" + i);
 
-            userRepository.save(user);
+            userDao.createUser(user);
         }
     }
 
