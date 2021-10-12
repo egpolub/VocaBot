@@ -1,7 +1,8 @@
 package ru.jpol.vocabot.entity;
 
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import java.sql.Timestamp;
 import java.util.Date;
 

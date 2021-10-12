@@ -133,6 +133,8 @@ public class UserDaoImpl implements UserDao {
             throw new CustomDuplicateKeyDaoException(errorMessage);
         } catch (CustomUserRolesRelationDaoException e2) {
             // do nothing, looks like impossible behavior
+        } catch (DataAccessException e3) {
+            logger.error(e3.getMessage(), e3);
         }
         logger.warn("Could not add user with userId={}", user.getUserId());
 
@@ -195,9 +197,12 @@ public class UserDaoImpl implements UserDao {
                 return true;
             }
         } catch (DuplicateKeyException e) {
-            String errorMessage = "Could not update with duplicated email";
+            String errorMessage = String.format("Could not update user with userId=%d due to duplicated email=%s",
+                    user.getUserId(), user.getEmail());
             logger.warn(errorMessage);
             throw new CustomDuplicateKeyDaoException(errorMessage);
+        } catch (DataAccessException e2) {
+            logger.error(e2.getMessage(), e2);
         }
         logger.warn("Could not update user with userId={}", user.getUserId());
 
