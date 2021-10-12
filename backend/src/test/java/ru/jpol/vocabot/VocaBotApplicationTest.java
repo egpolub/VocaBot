@@ -21,6 +21,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import ru.jpol.vocabot.dao.impl.UserDaoImpl;
 import ru.jpol.vocabot.dao.impl.WordDaoImpl;
+import ru.jpol.vocabot.dao.repository.RoleRepository;
 import ru.jpol.vocabot.dao.repository.UserRepository;
 import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
@@ -48,6 +49,9 @@ public abstract class VocaBotApplicationTest implements Constants {
 
     @Autowired
     public WordDaoImpl wordDao;
+
+    @Autowired
+    public RoleRepository roleRepository;
 
     @ClassRule
     public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:11-alpine");
