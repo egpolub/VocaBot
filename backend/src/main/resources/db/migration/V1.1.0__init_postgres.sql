@@ -50,5 +50,6 @@ CREATE TABLE IF NOT EXISTS voca.users_roles
     CONSTRAINT fk_users_roles_users
         FOREIGN KEY(user_id)
             REFERENCES voca.users(user_id)
+                ON UPDATE CASCADE ON DELETE CASCADE
 );
 

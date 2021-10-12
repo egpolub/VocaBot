@@ -2,34 +2,23 @@ package ru.jpol.vocabot.entity;
 
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @MappedSuperclass
 public class BaseEntity {
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false)
-    private Date created;
+    private Timestamp created;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated", nullable = false)
-    private Date updated;
+    private Timestamp updated;
 
-    @PrePersist
-    protected void onCreate() {
-        updated = created = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
-    }
-
-    public Date getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
@@ -37,7 +26,7 @@ public class BaseEntity {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(Timestamp updated) {
         this.updated = updated;
     }
 }

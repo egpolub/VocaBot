@@ -7,12 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.dao.impl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
+import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
 
 import java.time.ZoneOffset;
 
@@ -31,7 +33,7 @@ public class UserRestImpl implements UserApi{
     public ResponseEntity<UserInfo> getUserByUserId(Long userId) {
         logger.info("Request getUserByUserId() with userId={}", userId);
 
-        User user = userService.findUser(userId);
+        User user = userService.getUser(userId);
         if (user == null) {
             return ResponseEntity.noContent().build();
         }
@@ -56,7 +58,7 @@ public class UserRestImpl implements UserApi{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
 
-        User user = userService.findUser(userId);
+        User user = userService.getUser(userId);
         if (user == null) {
             String message = String.format("User with userId=%d not found", userId);
             logger.warn(message);
@@ -65,8 +67,11 @@ public class UserRestImpl implements UserApi{
 
         BeanUtils.copyProperties(userInfo, user, "userId");
 
-        userService.updateUser(user);
-
+        try {
+            userService.updateUser(user);
+        } catch (CustomDuplicateKeyDaoException e) {
+            // TODO throw exception
+        }
         return ResponseEntity.ok().build();
     }
 
@@ -79,7 +84,7 @@ public class UserRestImpl implements UserApi{
             logger.warn(message);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
-        if (userService.findUser(userInfo.getUserId()) != null) {
+        if (userService.getUser(userInfo.getUserId()) != null) {
             String message = String.format("User with userId=%d already exists", userInfo.getUserId());
             logger.warn(message);
             throw new ResponseStatusException(HttpStatus.CONFLICT, message);
@@ -88,12 +93,13 @@ public class UserRestImpl implements UserApi{
         User user = new User();
         BeanUtils.copyProperties(userInfo, user);
         try {
-            userService.createUser(user);
+            if (!userService.createUser(user)) {
+
+            };
         }
-        catch (PropertyValueException e) {
-            String message = String.format("User with userId=%d already exists", user.getUserId());
-            logger.warn(message);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, message);
+        catch (CustomDuplicateKeyDaoException e) {
+            // add error description
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

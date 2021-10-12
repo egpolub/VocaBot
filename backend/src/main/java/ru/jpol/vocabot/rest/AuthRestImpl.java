@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.jpol.vocabot.config.AdditionalSecurityConfig;
 import ru.jpol.vocabot.dao.impl.UserDaoImpl;
 import ru.jpol.vocabot.entity.User;
+import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
 import ru.jpol.vocabot.security.jwt.JwtProvider;
 import ru.jpol.vocabot.utils.RestUtils;
 
@@ -63,13 +64,16 @@ public class AuthRestImpl implements AuthApi {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        if (userService.findUser(authInfo.getUserId()) != null) {
+        if (userService.getUser(authInfo.getUserId()) != null) {
             // TODO if user exists in the system?
         }
         User user = new User();
         BeanUtils.copyProperties(authInfo, user);
-        userService.createUser(user);
-
+        try {
+            userService.createUser(user);
+        } catch (CustomDuplicateKeyDaoException e) {
+            // TODO XXX???
+        }
         String token = jwtProvider.generateToken(user.getUserId().toString(), user.getRoles());
 
         return ResponseEntity.ok().header("Authentication", "Bearer_" + token).build();

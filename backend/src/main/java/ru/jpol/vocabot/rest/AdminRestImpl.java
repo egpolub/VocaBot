@@ -32,7 +32,7 @@ public class AdminRestImpl implements AdminApi {
     public ResponseEntity<Void> deleteUserByUserId(Long userId) {
         logger.info("Request deleteUserByUserId() with userId={}", userId);
 
-        if (userService.findUser(userId) == null) {
+        if (userService.getUser(userId) == null) {
             String message = String.format("User with userId=%d not found", userId);
             logger.warn(message);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
@@ -47,7 +47,7 @@ public class AdminRestImpl implements AdminApi {
     public ResponseEntity<List<UserInfo>> getListUsers() {
         logger.info("Request getListUsers()");
 
-        List<User> users = userService.findAllUser();
+        List<User> users = userService.getListUsers();
         List<UserInfo> resultUsers = new ArrayList<>();
         users.forEach(user -> {
             UserInfo userInfo = new UserInfo();
