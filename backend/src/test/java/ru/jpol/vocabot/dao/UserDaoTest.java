@@ -3,29 +3,29 @@ package ru.jpol.vocabot.dao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.jpol.vocabot.VocaBotApplicationTest;
-import ru.jpol.vocabot.entity.Role;
 import ru.jpol.vocabot.entity.User;
+import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
 
 import java.util.List;
 
 
 public class UserDaoTest extends VocaBotApplicationTest {
 
-    @Test
-    public void testFindRole() {
-        /*
-          ROLE_USER, ROLE_ADMIN must exist in table Roles
-         */
-        Role userRole = userDao.findRole("ROLE_USER");
-        Role adminRole = userDao.findRole("ROLE_ADMIN");
+//    @Test
+//    public void testFindRole() {
+//        /*
+//          ROLE_USER, ROLE_ADMIN must exist in table Roles
+//         */
+//        Role userRole = userDao.findRole("ROLE_USER");
+//        Role adminRole = userDao.findRole("ROLE_ADMIN");
+//
+//        Assertions.assertNull(userDao.findRole("ROLE_UNKNOWN"));
+//        Assertions.assertEquals("ROLE_USER", userRole.getName());
+//        Assertions.assertEquals("ROLE_ADMIN", adminRole.getName());
+//    }
 
-        Assertions.assertNull(userDao.findRole("ROLE_UNKNOWN"));
-        Assertions.assertEquals("ROLE_USER", userRole.getName());
-        Assertions.assertEquals("ROLE_ADMIN", adminRole.getName());
-    }
-
     @Test
-    public void testCreateUser() {
+    public void testCreateUser() throws Exception{
         User user = new User();
         user.setUserId(0L);
         user.setUsername("test_username");
@@ -34,7 +34,7 @@ public class UserDaoTest extends VocaBotApplicationTest {
 
         userDao.createUser(user);
 
-        User createdUser = userDao.findUser(user.getUserId());
+        User createdUser = userDao.getUser(user.getUserId());
         Assertions.assertNotNull(createdUser);
         Assertions.assertEquals(user.getUserId(), createdUser.getUserId());
         Assertions.assertEquals(user.getUsername(), createdUser.getUsername());
@@ -42,9 +42,9 @@ public class UserDaoTest extends VocaBotApplicationTest {
         Assertions.assertEquals(user.getEmail(), createdUser.getEmail());
         Assertions.assertNotNull(createdUser.getCreated());
         Assertions.assertTrue(createdUser.getCreated().getTime() < System.currentTimeMillis());
-        // TODO created and updated timestamps should be the same
-        // Assertions.assertEquals(createdUser.getUpdated().getTime(), createdUser.getCreated().getTime());
+        Assertions.assertEquals(createdUser.getUpdated().getTime(), createdUser.getCreated().getTime());
 
+        createdUser = userRepository.findById(user.getUserId()).orElseThrow();
         Assertions.assertEquals(1, createdUser.getRoles().size());
         Assertions.assertEquals("ROLE_USER", createdUser.getRoles().get(0).getName());
 
@@ -55,8 +55,8 @@ public class UserDaoTest extends VocaBotApplicationTest {
         user2.setFirstname("test_firstname2");
         user2.setEmail("test2@test.com");
 
-        // TODO should be thrown exception
-//        userDao.createUser(user2);
+        Assertions.assertThrows(CustomDuplicateKeyDaoException.class,
+                () -> userDao.createUser(user2));
 
         // try to add user with existent email
         User user3 = new User();
@@ -71,34 +71,34 @@ public class UserDaoTest extends VocaBotApplicationTest {
 
         // user does not exist in the system
         Long unknownUserId = 123456L;
-        Assertions.assertNull(userDao.findUser(unknownUserId));
+        Assertions.assertNull(userDao.getUser(unknownUserId));
     }
 
     @Test
     public void testFindUser() {
         config_01();
 
-        List<User> users = userDao.findAllUser();
+        List<User> users = userDao.getListUsers();
         Assertions.assertEquals(defaultListSize, users.size());
 
         // find user by userName
-        Assertions.assertNotNull(userDao.findUserByName("username0"));
+        Assertions.assertNotNull(userRepository.findByUsername("username0"));
 
         // user does not exist in the system
-        Assertions.assertNull(userDao.findUserByName("unknown username"));
+        Assertions.assertNull(userRepository.findByUsername("unknown username"));
     }
 
     @Test
-    public void testUpdateUser() {
+    public void testUpdateUser() throws Exception{
         config_01();
 
-        User user = userDao.findUser(0L);
+        User user = userDao.getUser(0L);
         Assertions.assertEquals("test0@test.com", user.getEmail());
 
         user.setEmail("updatedTest@test.com");
         userDao.updateUser(user);
 
-        User updatedUser = userDao.findUser(user.getUserId());
+        User updatedUser = userDao.getUser(user.getUserId());
         Assertions.assertEquals(user.getEmail(), updatedUser.getEmail());
     }
 
@@ -106,7 +106,7 @@ public class UserDaoTest extends VocaBotApplicationTest {
     public void testDeleteUser() {
         config_01();
 
-        Assertions.assertEquals(defaultListSize, userDao.findAllUser().size());
+        Assertions.assertEquals(defaultListSize, userDao.getListUsers().size());
 
         userDao.deleteUser(0L);
         userDao.deleteUser(1L);
@@ -114,9 +114,9 @@ public class UserDaoTest extends VocaBotApplicationTest {
         userDao.deleteUser(3L);
         userDao.deleteUser(4L);
 
-        List<User> users = userDao.findAllUser();
+        List<User> users = userDao.getListUsers();
         Assertions.assertEquals(0, users.size());
-        Assertions.assertNull(userDao.findUser(1L));
-        Assertions.assertTrue(userDao.findAllUser().isEmpty());
+        Assertions.assertNull(userDao.getUser(1L));
+        Assertions.assertTrue(userDao.getListUsers().isEmpty());
     }
 }

@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 import org.junit.ClassRule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,9 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import ru.jpol.vocabot.dao.impl.UserDaoImpl;
 import ru.jpol.vocabot.dao.impl.WordDaoImpl;
+import ru.jpol.vocabot.dao.repository.UserRepository;
 import ru.jpol.vocabot.entity.User;
+import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
 
 import javax.sql.DataSource;
 
@@ -39,6 +42,9 @@ public abstract class VocaBotApplicationTest implements Constants {
 
     @Autowired
     public UserDaoImpl userDao;
+
+    @Autowired
+    public UserRepository userRepository;
 
     @Autowired
     public WordDaoImpl wordDao;
@@ -92,7 +98,12 @@ public abstract class VocaBotApplicationTest implements Constants {
             user.setFirstname("firstname" + i);
             user.setUsername("username" + i);
 
-            userDao.createUser(user);
+            try {
+                userDao.createUser(user);
+            } catch (CustomDuplicateKeyDaoException e) {
+                // impossible behavior
+                Assertions.fail("Something went wrong");
+            }
         }
     }
 
