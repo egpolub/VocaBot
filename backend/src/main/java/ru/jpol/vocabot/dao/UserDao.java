@@ -26,7 +26,7 @@ public interface UserDao {
      *
      * @param user
      * @return true - if the user was added to the system, false - otherwise
-     * @throws CustomDuplicateKeyDaoException - if userId or email not unique
+     * @throws CustomDuplicateKeyDaoException if user id or email not unique
      */
     boolean createUser(User user) throws CustomDuplicateKeyDaoException;
 
@@ -35,7 +35,7 @@ public interface UserDao {
      *
      * @param user
      * @return true - if the user was updated to the system, false - otherwise
-     * @throws CustomDuplicateKeyDaoException - if email not unique
+     * @throws CustomDuplicateKeyDaoException if email not unique
      */
     boolean updateUser(User user) throws CustomDuplicateKeyDaoException;
 
