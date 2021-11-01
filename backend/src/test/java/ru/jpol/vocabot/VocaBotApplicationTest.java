@@ -27,6 +27,8 @@ import ru.jpol.vocabot.entity.User;
 import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @ActiveProfiles("test")
@@ -40,6 +42,8 @@ public abstract class VocaBotApplicationTest implements Constants {
     private static String FLYWAY_SCHEMAS;
 
     private Flyway flyway;
+
+    protected List<Long> userIds;
 
     @Autowired
     public UserDaoImpl userDao;
@@ -93,6 +97,8 @@ public abstract class VocaBotApplicationTest implements Constants {
      * Create and save to db 5 users
      */
     protected void config_01() {
+        userIds = new ArrayList<>(defaultListSize);
+
         User user;
         for (long i = 0; i < defaultListSize; i++) {
             user = new User();
@@ -104,6 +110,7 @@ public abstract class VocaBotApplicationTest implements Constants {
 
             try {
                 userDao.createUser(user);
+                userIds.add(user.getUserId());
             } catch (CustomDuplicateKeyDaoException e) {
                 // impossible behavior
                 Assertions.fail("Something went wrong");
