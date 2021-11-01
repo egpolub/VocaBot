@@ -15,12 +15,13 @@ public interface DictionaryDao {
     List<Dictionary> getListDictionaries(Long userId);
 
     /**
-     * Get dictionary by user id
+     * Get dictionary by dictionary id and user id
      *
+     * @param dictionaryId dictionary id
      * @param userId user id
      * @return dictionary
      */
-    Dictionary getDictionary(Long userId);
+    Dictionary getDictionary(Integer dictionaryId, Long userId);
 
     /**
      * Add dictionary to the system
@@ -32,7 +33,8 @@ public interface DictionaryDao {
     boolean createDictionary(Dictionary dictionary) throws CustomDuplicateKeyDaoException;
 
     /**
-     * Update an existing dictionary in the system
+     * Update an existing dictionary in the system,
+     * user id will be ignored
      *
      * @param dictionary
      * @return true - if the dictionary was updated to the system, false - otherwise

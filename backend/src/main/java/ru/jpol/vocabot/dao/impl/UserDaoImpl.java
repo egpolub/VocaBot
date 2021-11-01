@@ -39,8 +39,6 @@ public class UserDaoImpl implements UserDao {
     @Value("${spring.flyway.schemas}")
     private String DEFAULT_SCHEMA_NAME;
 
-
-
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
@@ -127,7 +125,7 @@ public class UserDaoImpl implements UserDao {
                 return true;
             }
         } catch (DuplicateKeyException e) {
-            String errorMessage = String.format("Could not create with duplicated userId=%s || email=%s",
+            String errorMessage = String.format("Could not create user with duplicated userId=%d || email=%s",
                     user.getUserId(), user.getEmail());
             logger.warn(errorMessage);
             throw new CustomDuplicateKeyDaoException(errorMessage);

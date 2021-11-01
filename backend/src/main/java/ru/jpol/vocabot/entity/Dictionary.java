@@ -15,11 +15,12 @@ public class Dictionary {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private Type type = Type.UNKNOWN_LANG;
 
 
     public enum Type {
-        RUS_ENG("rus-eng");
+        RUS_ENG("rus-eng"),
+        UNKNOWN_LANG("unknown-languages");
 
         private final String value;
 
@@ -85,5 +86,13 @@ public class Dictionary {
 
     public void setTotalLimit(Integer totalLimit) {
         this.totalLimit = totalLimit;
+    }
+
+    public Integer getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public void setDictionaryId(Integer dictionaryId) {
+        this.dictionaryId = dictionaryId;
     }
 }

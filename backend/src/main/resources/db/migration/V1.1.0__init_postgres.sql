@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS voca.dictionary
 (
     dictionary_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    type VARCHAR(50),
+    type VARCHAR(50) NOT NULL,
     user_id BIGINT NOT NULL,
     total INTEGER NOT NULL DEFAULT 0,
     total_limit INTEGER,
