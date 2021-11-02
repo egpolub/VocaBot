@@ -135,7 +135,7 @@ public class DictionaryDaoTest extends VocaBotApplicationTest {
     }
 
     @Test
-    public void testDeleteVocabulary() throws Exception {
+    public void testDeleteDictionary() throws Exception {
         config_01();
 
         // normal case
