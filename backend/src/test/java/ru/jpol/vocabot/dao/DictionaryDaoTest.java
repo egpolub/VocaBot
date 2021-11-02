@@ -61,6 +61,9 @@ public class DictionaryDaoTest extends VocaBotApplicationTest {
 
         Assertions.assertTrue(dictionaryDao.createDictionary(dictionary2));
 
+        // error case. Try to add dictionary a second time
+        Assertions.assertThrows(CustomDuplicateKeyDaoException.class, () -> dictionaryDao.createDictionary(dictionary2));
+
         Dictionary createdDictionary2 = dictionaryDao.getDictionary(dictionary2.getDictionaryId(), dictionary2.getUserId());
         Assertions.assertEquals(dictionary2.getName(), createdDictionary2.getName());
 
@@ -77,5 +80,76 @@ public class DictionaryDaoTest extends VocaBotApplicationTest {
         dictionary3.setUserId(userIds.get(2));
 
         Assertions.assertFalse(dictionaryDao.createDictionary(dictionary3));
+    }
+
+    @Test
+    public void testUpdateDictionary() throws Exception{
+        config_01();
+
+        Dictionary dictionary = new Dictionary();
+        dictionary.setName("Education");
+        dictionary.setUserId(userIds.get(0));
+        dictionary.setType(Dictionary.Type.UNKNOWN_LANG);
+        dictionary.setTotalLimit(150);
+
+        // try to update not existent dictionary
+        Assertions.assertFalse(dictionaryDao.updateDictionary(dictionary));
+
+        // normal case. Dictionary present in the system
+        dictionaryDao.createDictionary(dictionary);
+
+        Dictionary updatedDictionary = new Dictionary();
+        updatedDictionary.setDictionaryId(dictionary.getDictionaryId());
+        updatedDictionary.setType(Dictionary.Type.RUS_ENG);
+        updatedDictionary.setName("Updated Education");
+        updatedDictionary.setUserId(userIds.get(1)); // should be ignored
+        updatedDictionary.setTotalLimit(200);
+
+        Assertions.assertTrue(dictionaryDao.updateDictionary(updatedDictionary));
+
+        Dictionary getUpdatedDictionary = dictionaryDao.getDictionary(dictionary.getDictionaryId(), dictionary.getUserId());
+        Assertions.assertEquals(dictionary.getDictionaryId(), getUpdatedDictionary.getDictionaryId());
+        Assertions.assertEquals(dictionary.getUserId(), getUpdatedDictionary.getUserId());
+        Assertions.assertEquals(dictionary.getTotal(), getUpdatedDictionary.getTotal());
+        Assertions.assertNotEquals(dictionary.getName(), getUpdatedDictionary.getName());
+        Assertions.assertNotEquals(dictionary.getType(), getUpdatedDictionary.getType());
+        Assertions.assertNotEquals(dictionary.getTotalLimit(), getUpdatedDictionary.getTotalLimit());
+
+        Assertions.assertEquals(updatedDictionary.getName(), getUpdatedDictionary.getName());
+        Assertions.assertEquals(updatedDictionary.getType(), getUpdatedDictionary.getType());
+        Assertions.assertEquals(updatedDictionary.getTotalLimit(), getUpdatedDictionary.getTotalLimit());
+
+        // TODO test dictionary.getTotal() functionality
+
+
+        // error case. Try to update dictionary by no uniq name.
+        Dictionary dictionary2 = new Dictionary();
+        dictionary2.setName("Uniq Name");
+        dictionary2.setUserId(getUpdatedDictionary.getUserId());
+
+        dictionaryDao.createDictionary(dictionary2);
+        Dictionary updatedDictionary2 = dictionaryDao.getDictionary(dictionary2.getDictionaryId(), dictionary2.getUserId());
+        updatedDictionary2.setName(getUpdatedDictionary.getName()); // no uniq name
+
+        Assertions.assertThrows(CustomDuplicateKeyDaoException.class, () -> dictionaryDao.updateDictionary(updatedDictionary2));
+    }
+
+    @Test
+    public void testDeleteVocabulary() throws Exception {
+        config_01();
+
+        // normal case
+        Dictionary dictionary = new Dictionary();
+        dictionary.setName("Cars");
+        dictionary.setType(Dictionary.Type.UNKNOWN_LANG);
+        dictionary.setTotalLimit(150);
+        dictionary.setUserId(userIds.get(0));
+
+        dictionaryDao.createDictionary(dictionary);
+
+        Assertions.assertTrue(dictionaryDao.deleteDictionary(dictionary.getDictionaryId(), dictionary.getUserId()));
+
+        // error case. Try to delete no existent dictionary
+        Assertions.assertFalse(dictionaryDao.deleteDictionary(123, 123L));
     }
 }
