@@ -146,7 +146,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
                     DaoUtils.getExtendedTableName(DEFAULT_SCHEMA_NAME, TABLE_DICTIONARY_NAME) +
                     " SET name = :name," +
                     "type = :type," +
-                    "totalLimit" +
+                    "total_limit = :totalLimit" +
                     " WHERE dictionary_id = :dictionaryId";
             int rows = namedParameterJdbcTemplate.update(
                     sql,
@@ -166,7 +166,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
         }
         logger.warn("Could not update dictionary with name={} and userId={}", dictionary.getName(), dictionary.getUserId());
 
-        return true;
+        return false;
     }
 
     @Override
