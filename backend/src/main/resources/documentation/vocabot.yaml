@@ -126,6 +126,14 @@ paths:
           description: Not Found.
 
   /dictionary:
+    parameters:
+      - name: userId
+        in: query
+        description: ID of the User
+        required: false
+        schema:
+          type: integer
+          format: int64
     get:
       tags:
         - "dictionary"
@@ -137,9 +145,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/DictionaryInfo"
+                $ref: "#/components/schemas/DictionaryInfo"
     post:
       tags:
         - "dictionary"
@@ -165,6 +171,14 @@ paths:
           description: Conflict.
 
   /dictionary/{dictionaryId}:
+    parameters:
+      - name: userId
+        in: query
+        description: ID of the User
+        required: false
+        schema:
+          type: integer
+          format: int64
     get:
       tags:
         - "dictionary"
@@ -184,9 +198,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/DictionaryInfo"
+                $ref: "#/components/schemas/DictionaryInfo"
     patch:
       tags:
         - "dictionary"
