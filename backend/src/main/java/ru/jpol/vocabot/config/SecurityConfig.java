@@ -9,7 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.jpol.vocabot.security.jwt.JwtFilter;
+import ru.jpol.vocabot.filter.JwtFilter;
+import ru.jpol.vocabot.filter.RequestQueryFilter;
 import ru.jpol.vocabot.security.jwt.JwtProvider;
 
 
@@ -43,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HOME_ENDPOINT).anonymous()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .anyRequest().authenticated();
+
+        http.addFilterAfter(new RequestQueryFilter(), JwtFilter.class);
     }
 
     @Override
