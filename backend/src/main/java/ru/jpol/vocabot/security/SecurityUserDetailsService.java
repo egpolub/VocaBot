@@ -28,7 +28,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User with id=" + id + " not found"));
         JwtUserDetails jwtUser = JwtUserFactory.create(user);
-        logger.info("Create JWT user with id={}", jwtUser.getId());
         return jwtUser;
     }
 
