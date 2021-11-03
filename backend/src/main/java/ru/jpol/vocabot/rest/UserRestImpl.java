@@ -17,7 +17,7 @@ import ru.jpol.vocabot.exception.CustomDuplicateKeyDaoException;
 import java.time.ZoneOffset;
 
 @RestController
-public class UserRestImpl implements UserApi{
+public class  UserRestImpl implements UserApi{
     private static final Logger logger = LoggerFactory.getLogger(UserRestImpl.class);
 
     private final UserDaoImpl userService;

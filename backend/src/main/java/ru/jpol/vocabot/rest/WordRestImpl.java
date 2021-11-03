@@ -2,7 +2,7 @@ package ru.jpol.vocabot.rest;
 
 import io.tej.SwaggerCodgen.api.WordApi;
 import io.tej.SwaggerCodgen.api.WordsApi;
-import io.tej.SwaggerCodgen.model.InlineResponse201;
+import io.tej.SwaggerCodgen.model.ID;
 import io.tej.SwaggerCodgen.model.WordInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +111,7 @@ public class WordRestImpl implements WordApi, WordsApi {
     }
 
     @Override
-    public ResponseEntity<InlineResponse201> createWord(WordInfo wordInfo) {
+    public ResponseEntity<ID> createWord(WordInfo wordInfo) {
         logger.info("Request createWord() with dictionaryId={}", wordInfo.getDictionaryId());
 
         Integer dictionaryId = wordInfo.getDictionaryId();
@@ -136,7 +136,7 @@ public class WordRestImpl implements WordApi, WordsApi {
         wordService.createWord(daoWord);
 
         return daoWord.getWordId() != null
-                ? ResponseEntity.ok(new InlineResponse201().wordId(daoWord.getWordId()))
+                ? ResponseEntity.ok(new ID().id(daoWord.getWordId()))
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

@@ -1,13 +1,15 @@
 openapi: "3.0.0"
 info:
   description: "VocaBot REST API"
-  version: "1.0.1"
+  version: "1.0.2"
   title: "VocaBot"
 tags:
   - name: admin
     description: Admin operations
   - name: user
     description: User operations
+  - name: dictionary
+    description: Dictionary operations
   - name: word
     description: Operations about word
   - name: auth
@@ -97,8 +99,6 @@ paths:
                 $ref: "#/components/schemas/UserInfo"
         "404":
           description: Not Found.
-
-
     patch:
       tags:
         - "user"
@@ -125,6 +125,114 @@ paths:
         "404":
           description: Not Found.
 
+  /dictionary:
+    get:
+      tags:
+        - "dictionary"
+      description: "Get list of the dictionaries for User"
+      operationId: "getListDictionaries"
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DictionaryInfo"
+    post:
+      tags:
+        - "dictionary"
+      description: "Create dictionary"
+      operationId: "createDictionary"
+      requestBody:
+        description: Information about Dictionary
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DictionaryInfo'
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ID'
+        "400":
+          description: Bad Request.
+        "409":
+          description: Conflict.
+
+  /dictionary/{dictionaryId}:
+    get:
+      tags:
+        - "dictionary"
+      description: "Get Dictionary"
+      operationId: "getDictionary"
+      parameters:
+        - name: dictionaryId
+          in: path
+          description: ID of the dictionary
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DictionaryInfo"
+    patch:
+      tags:
+        - "dictionary"
+      description: "Update dictionary"
+      operationId: "updateDictionary"
+      parameters:
+        - name: dictionaryId
+          in: path
+          description: ID of the dictionary
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: Information about Dictionary
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DictionaryInfo'
+      responses:
+        "200":
+          description: Successful response.
+        "400":
+          description: Bad Request.
+        "409":
+          description: Conflict.
+    delete:
+      tags:
+        - "dictionary"
+      description: "Delete empty dictionary"
+      operationId: "deleteDictionary"
+      parameters:
+        - name: dictionaryId
+          in: path
+          description: ID of the dictionary
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "204":
+          description: No Content.
+        "409":
+          description: Conflict. Dictionary not empty
+
   /word:
     post:
       tags:
@@ -144,12 +252,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  wordId:
-                    type: integer
-                    format: int32
-                    description: The word ID. Created after adding to the system
+                $ref: '#/components/schemas/ID'
+
         "400":
           description: Bad Request.
         "409":
@@ -181,7 +285,6 @@ paths:
                   $ref: "#/components/schemas/WordInfo"
         "204":
           description: Not Content.
-
     delete:
       tags:
         - "word"
@@ -354,7 +457,7 @@ components:
         dictionaryId:
           type: integer
           format: int32
-          description: The user ID.
+          description: The dictionary ID.
         word:
           type: string
           description: The word.
@@ -369,3 +472,39 @@ components:
           type: string
           format: date-time
           description: The word last updated.
+
+    DictionaryInfo:
+      description: Information about Dictionary
+      type: object
+      properties:
+        dictionaryId:
+          type: integer
+          format: int32
+          description: The dictionary ID. Created after adding to the system
+        name:
+          type: string
+          description: The dictionary name
+        type:
+          type: string
+          enum:
+            - rus-eng
+            - unknown-language
+          description: type of the dictionary
+        userId:
+          type: integer
+          format: int64
+          description: The user ID
+        total:
+          type: integer
+          format: int32
+          description: Total count of words
+        totalCount:
+          type: integer
+          format: int32
+          description: Word limit in the dictionary
+
+    ID:
+      properties:
+        id:
+          type: integer
+          format: int32
