@@ -47,7 +47,7 @@ public class Dictionary {
     private Long userId;
 
     @Column(name = "total")
-    private final Integer total = 0;
+    private Integer total = 0;
 
     @Column(name = "total_limit")
     private Integer totalLimit;
@@ -94,5 +94,9 @@ public class Dictionary {
 
     public void setDictionaryId(Integer dictionaryId) {
         this.dictionaryId = dictionaryId;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 }

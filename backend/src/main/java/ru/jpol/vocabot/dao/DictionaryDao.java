@@ -43,7 +43,7 @@ public interface DictionaryDao {
     boolean updateDictionary(Dictionary dictionary) throws CustomDuplicateKeyDaoException;
 
     /**
-     * Delete an existing dictionary from the system
+     * Delete an existing empty dictionary from the system
      *
      * @param dictionaryId dictionary id
      * @param userId user id

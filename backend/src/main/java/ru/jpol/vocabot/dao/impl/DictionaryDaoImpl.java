@@ -54,9 +54,9 @@ public class DictionaryDaoImpl implements DictionaryDao {
             dictionaries = namedParameterJdbcTemplate.query(
                     sql,
                     namedParameters,
-                    new BeanPropertyRowMapper<>(Dictionary.class));
+                    new EnumPropertyRowMapper());
 
-            logger.info("Found count={} dictionaries", dictionaries.size());
+            logger.info("Found count={} dictionaries for userId={}", dictionaries.size(), userId);
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }
@@ -119,10 +119,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
             }
         }
         catch (DuplicateKeyException e) {
-            String errorMessage = String.format("Could not create dictionary with duplicated name=%s and userId=%d",
+            logger.warn("Could not create dictionary with duplicated name={} for userId={}",
                     dictionary.getName(), dictionary.getUserId());
-            logger.warn(errorMessage);
-            throw new CustomDuplicateKeyDaoException(errorMessage);
+            throw new CustomDuplicateKeyDaoException(String.format("Could not create dictionary with duplicated name=%s",
+                    dictionary.getName()));
         }
         catch (DataAccessException e2) {
             logger.error(e2.getMessage(), e2);
@@ -174,13 +174,16 @@ public class DictionaryDaoImpl implements DictionaryDao {
         try {
             SqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("dictionaryId", dictionaryId)
-                    .addValue("userId", userId);
+                    .addValue("userId", userId)
+                    .addValue("total", 0);
 
             String sql = "DELETE FROM " +
                     DaoUtils.getExtendedTableName(DEFAULT_SCHEMA_NAME, TABLE_DICTIONARY_NAME) +
                     " WHERE dictionary_id = :dictionaryId" +
                     " AND " +
-                    "user_id = :userId";
+                    "user_id = :userId" +
+                    " AND " +
+                    "total = :total";
 
             int rows = namedParameterJdbcTemplate.update(
                     sql,
